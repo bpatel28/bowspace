@@ -1,5 +1,5 @@
 const Express = require('express');
-const config = require('./data/database-config.js'); // get our config file
+const config = require('./data/config.js'); // get our config file
 const Sql = require('mssql'); // For mssql
 const App = Express();
 

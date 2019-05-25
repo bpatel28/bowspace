@@ -61,4 +61,4 @@ typings/
 .next
 
 #database config
-data/database-config.js
+data/config.js
