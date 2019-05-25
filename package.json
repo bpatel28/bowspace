@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/bpatel28/bowspace/issues"
   },
-  "homepage": "https://github.com/bpatel28/bowspace#readme"
+  "homepage": "https://github.com/bpatel28/bowspace#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "express": "^4.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^6.1.4",
+    "mssql": "^5.1.0",
+    "nodemon": "^1.19.0"
+  }
 }
