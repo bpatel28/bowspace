@@ -21,19 +21,11 @@ const WebServer = App.listen(5000, function () {
 const Connection = new Sql.ConnectionPool(config.database);
 
 /**
- * Default Path
- */
-App.get('/', (req, res) => {
-    res.send('This is the Bowspace API');
-});
-
-/**
  * Login Path
  */
 App.post('/login', (req, res) => {
-    console.log(req.body);
     Connection.connect()
-        .then(pool => {
+        .then(() => {
             //get input from req body
             let Email = req.body.Email === undefined ? '' : req.body.Email;
             let UserName = req.body.UserName === undefined ? '' : req.body.UserName;
@@ -73,7 +65,7 @@ App.post('/login', (req, res) => {
                         FirstName : row.FirstName,
                         LastName: row.LastName,
                         Email : row.Email,
-                        Token : token
+                        Token : token,
                     },
                     Status: 'Success'
                 });
@@ -94,3 +86,44 @@ App.post('/login', (req, res) => {
             Connection.close(); //close connection
         });
 });
+
+/** 
+ * Middleware to verify token
+ * */
+App.use((req, res, next) => {
+    let token = req.body.token || req.headers['x-access-token']; //check for token
+    if (token) {
+        jwt.verify(token, config.secret, (err, decode) => {
+            if (err) {
+                //invalid access
+                return res.json({
+                    Guidance: "Access denied (A4483).",
+                    Status: "access denied"
+                });
+            } else {
+                //save decode info in req to use in other route
+                req.decode = decode;
+                next();
+            }
+        })
+    } else {
+        // invalid access
+        return res.status(403).send({
+            Guidance: "Access denied (A4483).",
+            Status: "access denied"
+        });
+    }
+});
+
+/**
+ * Default Path
+ */
+App.get('/', (req, res) => {
+    res.json({
+        Message: 'Welcome to the BowSpace API'
+    });
+});
+
+/**
+ * 
+ */
