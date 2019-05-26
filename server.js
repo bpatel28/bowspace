@@ -23,7 +23,7 @@ const Connection = new Sql.ConnectionPool(config.database);
 /**
  * Login Path
  */
-App.post('/login', (req, res) => {
+App.post('/rest/auth', (req, res) => {
     Connection.connect()
         .then(() => {
             //get input from req body
@@ -75,8 +75,6 @@ App.post('/login', (req, res) => {
         })
         .catch(err => {
 
-            console.error(err);
-
             //set error response
             res.status(500).send({
                 Guidance: "Access denied (A4483).",
@@ -125,5 +123,7 @@ App.get('/', (req, res) => {
 });
 
 /**
- * 
+ * Export for testing
  */
+
+ module.exports = App;
