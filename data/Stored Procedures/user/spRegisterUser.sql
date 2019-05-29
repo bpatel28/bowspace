@@ -25,12 +25,13 @@ AS
 		SELECT @UserId = NEXT VALUE FOR dbo.Sequence_UserId;
 		INSERT INTO TUsers(UserId, FirstName, LastName, UserName, Password, Email)
 			VALUES(@UserId, @FirstName, @LastName, @UserName, PWDENCRYPT(@Password), @Email)
-
+		SELECT @UserId AS UserId,'Success' AS Status;
 	END TRY
 	BEGIN CATCH
 		PRINT 'Error!';
 		PRINT 'Error Number: ' + CONVERT(VARCHAR, ERROR_NUMBER());
 		PRINT 'Error Message: ' + CONVERT(VARCHAR, ERROR_MESSAGE());
+		SELECT CONVERT(VARCHAR(80), ERROR_MESSAGE()) AS Guidance, 'Error' AS Status;
 	END CATCH
 GO
 

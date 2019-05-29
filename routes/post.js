@@ -8,7 +8,6 @@ const Sql = require('mssql'); //ms sql
  */
 const getPosts = (req, res) => {
     //get query params
-    console.log(req.query);
     let postId = req.query.PostId === undefined ? '' : req.query.PostId;
     let senderId = req.query.SenderId === undefined ? '' : req.query.SenderId;
     let receiverId = req.query.ReceiverId === undefined ? '' : req.query.ReceiverId;
@@ -80,7 +79,13 @@ const createPost = (req, res) => {
         });
 }
 
+/**
+ * delete post
+ * @param {*} req 
+ * @param {*} res 
+ */
 const deletePost = (req, res) => {
+    //get post id
     let postId = req.body.PostId === undefined ? '' : req.body.PostId;
 
     Connection.connect()

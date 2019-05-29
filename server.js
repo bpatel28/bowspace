@@ -23,6 +23,11 @@ const WebServer = App.listen(5000, function () {
 App.route('/rest/auth')
     .post(auth.authenticateUser);
 
+/**
+ * Register User path
+ */
+App.route('/rest/register-user')
+    .put(user.registerUser);
 
 /** 
  * Middleware to verify token
