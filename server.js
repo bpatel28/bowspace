@@ -1,9 +1,6 @@
 const Express = require('express'); //express
-
-const Connection = require('./config/connection'); //get the connection
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-const config = require('./config/config');
-const auth = require('./routes/auth');
+const auth = require('./routes/auth'); //auth route
+const user = require('./routes/user'); //user route
 
 const App = Express(); //middleware to get params from request
 const bodyParser = require('body-parser');
@@ -22,28 +19,9 @@ const WebServer = App.listen(5000, function () {
 /**
  * Login Path
  */
-App.post('/rest/auth', (req, res) => {
-    //get input from req body
-    let Email = req.body.Email === undefined ? '' : req.body.Email;
-    let UserName = req.body.UserName === undefined ? '' : req.body.UserName;
-    let Password = req.body.Password === undefined ? '' : req.body.Password;
-    //call function from auth route
-    auth.authenticateUser(Email, UserName, Password)
-        .then(result => {
-                //set response
-                res.status(200).json({
-                    Login: result.Login,
-                    Status: 'Success',
-                });
-        })
-        .catch(err => {
-            //set error response
-            res.status(500).send({
-                Guidance: "Access denied (A4483).",
-                Status: "access-denied"
-            });
-        });
-});
+App.route('/rest/auth')
+    .post(auth.authenticateUser)
+
 
 /** 
  * Middleware to verify token
@@ -78,10 +56,16 @@ App.use((req, res, next) => {
  */
 App.get('/', (req, res) => {
     res.json({
-        Message: 'Welcome to the BowSpace API'
+        Message: 'Welcome to the BowSpace API',
+        Status : 'Success'
     });
 });
 
+/**
+ * get Contacts
+ */
+App.route("/rest/users")
+    .get(user.getUsers);
 /**
  * Export for testing
  */

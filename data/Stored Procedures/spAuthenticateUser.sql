@@ -29,11 +29,9 @@ AS
 		
 	END TRY
 	BEGIN CATCH
-		SELECT 'Failure' AS Status, @UserId AS UserId
 		PRINT 'Error!';
 		PRINT 'Error Number: ' + CONVERT(VARCHAR, ERROR_NUMBER());
 		PRINT 'Error Message: ' + CONVERT(VARCHAR, ERROR_MESSAGE());
-		SELECT 'Failure' AS Status
 	END CATCH
 GO
 
