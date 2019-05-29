@@ -56,7 +56,7 @@ const createPost = (req, res) => {
 
     Connection.connect()
         .then(pool => {
-            //execte sp with sqlrequest
+            //execute sp with sqlrequest
             const sqlRequest = new Sql.Request(Connection);
             sqlRequest.input('SenderId', senderId);
             sqlRequest.input('ReceiverId', receiverId);
@@ -64,13 +64,12 @@ const createPost = (req, res) => {
             return sqlRequest.execute('spCreatePost');
         }).then(result => {
             //set response
-            let PostId = result.recordset[0];
+            let row = result.recordset[0];
             res.status(200).json({
-                PostId,
+                PostId : row.PostId,
                 Status : 'Success'
             });
         }).catch(err => {
-            console.log(err);
             //set error response
             res.status(500).json({
                 Guidance: "Invalid Request.",
@@ -81,4 +80,31 @@ const createPost = (req, res) => {
         });
 }
 
-module.exports = { getPosts, createPost }
+const deletePost = (req, res) => {
+    let postId = req.body.PostId === undefined ? '' : req.body.PostId;
+
+    Connection.connect()
+        .then(pool => {
+            //make sql request to delete post from db
+            const sqlRequest = new Sql.Request(Connection);
+            sqlRequest.input('PostId', postId);
+            return sqlRequest.execute('spDeletePost');
+        }).then(result => {
+            //set response
+            let row = result.recordset[0];
+            res.status(200).json({
+                DeletedPostId : row.PostId,
+                Status: 'Success'
+            });
+        }).catch(err => {
+            //set error response
+            res.status(500).json({
+                Guidance: "Invalid Request.",
+                Status: "Error"
+            });
+        }).then(() =>{
+            Connection.close();
+        });
+};
+
+module.exports = { getPosts, createPost, deletePost }

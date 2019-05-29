@@ -73,7 +73,8 @@ App.route('/rest/user')
  */
 App.route('/rest/post')
     .get(post.getPosts)
-    .put(post.createPost);
+    .put(post.createPost)
+    .delete(post.deletePost);
 
 /**
  * Export for testing
