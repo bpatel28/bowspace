@@ -1,6 +1,7 @@
 const Express = require('express'); //express
 const auth = require('./routes/auth'); //auth route
 const user = require('./routes/user'); //user route
+const post = require('./routes/post'); // post route
 
 const App = Express(); //middleware to get params from request
 const bodyParser = require('body-parser');
@@ -20,7 +21,7 @@ const WebServer = App.listen(5000, function () {
  * Login Path
  */
 App.route('/rest/auth')
-    .post(auth.authenticateUser)
+    .post(auth.authenticateUser);
 
 
 /** 
@@ -62,10 +63,18 @@ App.get('/', (req, res) => {
 });
 
 /**
- * get Contacts
+ * User route
  */
-App.route("/rest/users")
+App.route('/rest/user')
     .get(user.getUsers);
+
+/**
+ * Post route
+ */
+App.route('/rest/post')
+    .get(post.getPosts)
+    .put(post.createPost);
+
 /**
  * Export for testing
  */

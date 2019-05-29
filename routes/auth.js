@@ -3,6 +3,11 @@ const Sql = require('mssql');
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const config = require('../config/config');
 
+/**
+ * Authenticate user
+ * @param {*} req 
+ * @param {*} res 
+ */
 const authenticateUser = (req, res) => {
     //get input from req body
     let Email = req.body.Email === undefined ? '' : req.body.Email;
@@ -10,7 +15,7 @@ const authenticateUser = (req, res) => {
     let Password = req.body.Password === undefined ? '' : req.body.Password;
 
     Connection.connect()
-        .then(() => {
+        .then(pool => {
             //execute sp with SqlRequest
             const sqlRequest = new Sql.Request(Connection);
             sqlRequest.input('UserName', UserName);
@@ -48,14 +53,14 @@ const authenticateUser = (req, res) => {
                 });
             } else {
                 //set error response
-                res.status(500).send({
+                res.status(500).json({
                     Guidance: "Access denied (A4483).",
                     Status: "access-denied"
                 });
             }
         }).catch(err => {
             //set error response
-            res.status(500).send({
+            res.status(500).json({
                 Guidance: "Access denied (A4483).",
                 Status: "access-denied"
             });
@@ -65,12 +70,16 @@ const authenticateUser = (req, res) => {
 
 };
 
+/**
+ * verify token
+ * @param {*} token 
+ */
 const verifyToken = (token) => {
     let result = {};
     try {
         result.decode = jwt.verify(token, config.secret);
     } catch (error) {
-        result.err = errror;
+        result.err = error;
     } 
     return result;
 };
