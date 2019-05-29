@@ -86,4 +86,44 @@ const registerUser = (req, res) => {
         });
 };
 
-module.exports = { getUsers, registerUser }
+const updateUser = (req, res) => {
+    //get user info
+    let userId = req.body.UserId === undefined ? '' : req.body.UserId;
+    let firstName = req.body.FirstName === undefined ? '' : req.body.FirstName;
+    let lastName = req.body.LastName === undefined ? '' : req.body.LastName;
+    let email = req.body.Email === undefined ? '' : req.body.Email;
+    let password = req.body.Password === undefined ? '' : req.body.Password;
+    let username = req.body.UserName === undefined ? '' : req.body.UserName;
+
+    Connection.connect()
+        .then(pool => {
+            //make sql request
+            const sqlRequest = new Sql.Request(Connection);
+            sqlRequest.input('UserId', userId);
+            sqlRequest.input('FirstName', firstName);
+            sqlRequest.input('LastName', lastName);
+            sqlRequest.input('UserName', username);
+            sqlRequest.input('Email', email);
+            sqlRequest.input('Password', password);
+            return sqlRequest.execute('spUpdateUserInfo');
+        }).then(result => {
+            let row = result.recordset[0];
+            if (row.Status === 'Success') {
+                //set success response
+                res.status(200).json(row);
+            } else {
+                //error response
+                res.status(500).json(row);
+            }
+        }).catch(err => {
+            //error response
+            res.status(500).json({
+                Guidance: "Invalid Request. Check your inputs.",
+                Status: "Error"
+            });
+        }).then(() => {
+            Connection.close();
+        });
+};
+
+module.exports = { getUsers, registerUser, updateUser }

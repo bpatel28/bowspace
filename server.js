@@ -71,7 +71,8 @@ App.get('/', (req, res) => {
  * User route
  */
 App.route('/rest/user')
-    .get(user.getUsers);
+    .get(user.getUsers)
+    .post(user.updateUser);
 
 /**
  * Post route
