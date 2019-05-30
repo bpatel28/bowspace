@@ -68,7 +68,7 @@ Chat Application to post messages on different users wall.
 
     **Response Error** - { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
-### `Service 2 - Register New Account`
+### Service 2 - Register New Account
 
     This API will help user to register new account. API will return UserId with message and status if the information are valid otherwise it will return error with status.
 
@@ -84,7 +84,7 @@ Chat Application to post messages on different users wall.
 
     **Response Error** - { "Guidance" : "Invalid Request. Check your inputs.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
-### `Service 3 - Get User Information`
+### Service 3 - Get User Information
 
     This API will return list of users with their information like firstname, lastname, email and username. List can be filtered with keywords, username or userId. If params are wrong it will return error with guidance.
 
@@ -102,7 +102,7 @@ Chat Application to post messages on different users wall.
 
     **Response Error** - { "Guidance" : "Invalid Request. Check your inputs.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
-### `Service 4 - Get Posts`
+### Service 4 - Get Posts
 
     This API will return list of messages posted on wall. List could be filtered with SenderId, ReceiverId, TimeStamp, Keywords, PostId or Combination of those. If PostId provided no other params are required.
 
@@ -120,7 +120,7 @@ Chat Application to post messages on different users wall.
 
     **Response Error** - { "Guidance" : "Invalid Request. Check your inputs.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
-### `Service 5 - Create Post`
+### Service 5 - Create Post
 
     This API will accept new post for user. It will return PostId with success message or error with guidance.
 
@@ -138,7 +138,7 @@ Chat Application to post messages on different users wall.
 
     **Response Error** - { "Guidance" : "Invalid Request.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
-### `Service 6 - Delete Post`
+### Service 6 - Delete Post
 
     This API will help to delete post from database. It will return deletedPostId and success message or error with guidance.
 
@@ -156,7 +156,7 @@ Chat Application to post messages on different users wall.
 
     **Response Error** - { "Guidance" : "Invalid Request.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
-### `Service 7 - Update User`
+### Service 7 - Update User
 
     This API will update user information like their Email, Password, FirstName, LastName, UserName. It will return update information with success message on successful update or error with guidance.
 
