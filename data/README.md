@@ -7,7 +7,7 @@
 
 ## Scripts
 
-- [create-table.sql](create-table.sql)- Script to create tables
+- [create-tables.sql](create-tables.sql)- Script to create tables
 - [spCreatePost.sql](Stored-Procedures/post/spCreatePost.sql) - Stored Procedure to create new post
 - [spDeletePost.sql](Stored-Procedures/post/spDeletePost.sql) - Stored Procedure to delete a post
 - [spGetPosts.sql](Stored-Procedures/post/spGetPosts.sql) - Stored Procedure to get post from database
