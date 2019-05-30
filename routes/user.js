@@ -66,6 +66,7 @@ const registerUser = (req, res) => {
                 //set success response
                 res.status(200).json({
                     UserId : row.UserId,
+                    Message : 'User successfully registered',
                     Status : row.Status
                 });
             } else {
