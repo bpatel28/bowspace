@@ -63,5 +63,5 @@ AS
 	END CATCH
 GO
 
-EXEC spGetPosts '', '1001', '1000', '', ''
+EXEC spGetPosts '', '', '1002', '', ''
 GO
