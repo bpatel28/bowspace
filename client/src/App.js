@@ -1,5 +1,6 @@
 import React from 'react';
 import Login from './components/Login'
+import Register from './components/Registration'
 import { BrowserRouter as Router, Route } from "react-router-dom"
 import {  } from 'react-bootstrap'
 
@@ -15,7 +16,7 @@ class App extends React.Component {
     return (
       <Router>
         <Route path="/login" component={Login}/>
-        <Route path="/register" component={Login} />
+        <Route path="/register" component={Register} />
       </Router>
     );
   }

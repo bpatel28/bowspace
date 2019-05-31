@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom"
 import {Container, Row, Col, Form, Button, Card} from "react-bootstrap";
 
-const Login = (props) => {
+const Login = props => {
     return (
         <div className='bg-dark d-flex align-items-center' style={{height : '100vh', backgroundColor : 'black'}}>
           <Container>
@@ -27,7 +27,7 @@ const Login = (props) => {
 
                                     <Form.Group>
                                         <Form.Label className="text-muted text-center">
-                                            Don't have an account. <Link to='/'> Register Now. </Link>
+                                            Don't have an account. <Link to='/register'> Register Now. </Link>
                                         </Form.Label>
                                     </Form.Group>
                             
