@@ -17,32 +17,32 @@ const Register = props => {
                         <Card.Body>
                             <Form>
                                 <Form.Group controlId="formBasicTextFname">
-                                    <Form.Label><i class="fas fa-user"></i> First Name</Form.Label>
+                                    <Form.Label><i className="fas fa-user"></i> First Name</Form.Label>
                                     <Form.Control type="fname" placeholder="Enter First Name" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicTextLname">
-                                    <Form.Label><i class="fas fa-user"></i> Last Name</Form.Label>
+                                    <Form.Label><i className="fas fa-user"></i> Last Name</Form.Label>
                                     <Form.Control type="lname" placeholder="Enter Last Name" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicTextUsername">
-                                    <Form.Label><i class="fas fa-user-alt"></i> User Name</Form.Label>
+                                    <Form.Label><i className="fas fa-user-alt"></i> User Name</Form.Label>
                                     <Form.Control type="username" placeholder="Enter User Name" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicEmail">
-                                    <Form.Label><i class="fas fa-envelope"></i> Email address</Form.Label>
+                                    <Form.Label><i className="fas fa-envelope"></i> Email address</Form.Label>
                                     <Form.Control type="email" placeholder="Enter Email" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicPassword">
-                                    <Form.Label><i class="fas fa-key"></i> Password</Form.Label>
+                                    <Form.Label><i className="fas fa-key"></i> Password</Form.Label>
                                     <Form.Control type="password" placeholder="Password" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicConfirmPassword">
-                                    <Form.Label><i class="fas fa-key"></i> Confirm Password</Form.Label>
+                                    <Form.Label><i className="fas fa-key"></i> Confirm Password</Form.Label>
                                     <Form.Control type="password" placeholder="Password" />
                                 </Form.Group>
 
@@ -54,7 +54,7 @@ const Register = props => {
                         
                                 <Form.Group className="text-center">
                                         <Button style={{backgroundColor : '#3575dd'}} className="text-center" type="submit">
-                                            <i class="fas fa-sign-in-alt"></i> Sign Up
+                                            <i className="fas fa-sign-in-alt"></i> Sign Up
                                         </Button>
                                 </Form.Group>
                             </Form>

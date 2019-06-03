@@ -14,32 +14,32 @@ class Contacts extends React.Component {
     }
 
     render () {
-        let contacts = [{
+        const contacts = [{
             FirstName: "Brijesh",
             UserName : "b.patel405",
             Email : "b.patel405@mybvc.ca",
             LastName: "Patel"
         }];
-        let firstName = "Brijesh";
-        let lastName = "Patel";
-        let name = this.getFullName(firstName, lastName);
-        let username = "b.patel405"
-        let initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        const firstName = "Brijesh";
+        const lastName = "Patel";
+        const name = this.getFullName(firstName, lastName);
+        const username = "b.patel405"
+        const initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
         return (
             <Container fluid='true' className="text-white text-center" style={{height : '100%', padding : '0'}}>
                 <Card style={{ backgroundColor : '#3575dd' }}>
                    <Card.Header as="h5">
-                       <Card.Text><i class="fas fa-home"></i> Bowspace</Card.Text>
+                       <Card.Text><i className="fas fa-home"></i> Bowspace</Card.Text>
                    </Card.Header>
                    <Card.Body className="p-3 m-0">
                         <Card.Title as="h1"><Badge variant="light" pill="true">{initials}</Badge></Card.Title>
                         <Card.Title>{name}</Card.Title>
                         <Card.Text>{username}</Card.Text>
-                        <Button variant="danger"><i class="fas fa-sign-out-alt"></i> Logout</Button>
+                        <Button variant="danger"><i className="fas fa-sign-out-alt"></i> Logout</Button>
                     </Card.Body>
                 </Card >
                 <Card bg='dark' style={{height : '60%'}}>
-                    <Card.Header as="h5"><i class="fas fa-address-book"></i> Members</Card.Header>
+                    <Card.Header as="h5"><i className="fas fa-address-book"></i> Members</Card.Header>
                     <Card.Body style={{height : '95%', overflow : 'auto'}}>
                         <ListGroup variant="flush">
                             {
