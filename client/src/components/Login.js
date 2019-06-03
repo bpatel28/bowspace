@@ -11,17 +11,18 @@ const Login = props => {
               <Col md="5">
                     <Card border='primary'>
                         <Card.Header as='h5' className="text-center text-white" style={{ backgroundColor : '#3575dd' }}>
-                            Login
+                            <Form.Label> WELCOME</Form.Label>
+                            <Form.Text>Nice to see you again, Please Login.</Form.Text>
                         </Card.Header>
                         <Card.Body>
                                 <Form>
                                     <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Email address</Form.Label>
-                                        <Form.Control type="email" placeholder="Enter email" />
+                                        <Form.Label><i class="fas fa-user-alt"></i> Email/Username</Form.Label>
+                                        <Form.Control type="email" placeholder="Enter email or Username" />
                                     </Form.Group>
 
                                     <Form.Group controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
+                                        <Form.Label><i class="fas fa-key"></i> Password</Form.Label>
                                         <Form.Control type="password" placeholder="Password" />
                                     </Form.Group>
 
@@ -33,7 +34,7 @@ const Login = props => {
                             
                                     <Form.Group className="text-center">
                                             <Button style={{backgroundColor : '#3575dd'}} className="text-center" type="submit">
-                                                Submit
+                                                <i class="fas fa-sign-in-alt"></i> Login
                                             </Button>
                                     </Form.Group>
                                 </Form>
