@@ -1,11 +1,20 @@
 import React from "react"
 import {Card} from "react-bootstrap"
 
+/**
+ * filter contact from contact list
+ * @param {*} contacts 
+ * @param {*} userId 
+ */
 const getContact = (contacts, userId) => {
     let filteredContacts = contacts.filter(contact => contact.UserId === userId);
     return filteredContacts[0];
 };
 
+/**
+ * stateless component post to display single post
+ * @param {*} props 
+ */
 const Post = props => {
     let msg = props.msg;
     let contacts = props.contacts;
@@ -22,6 +31,10 @@ const Post = props => {
     );
 }
 
+/**
+ * Show list of posts as per the state data
+ * @param {*} props 
+ */
 const Posts = (props) => {
     const posts = props.Posts;
     const contacts = props.Contacts;

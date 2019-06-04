@@ -2,7 +2,7 @@ import React from 'react';
 import Login from './components/Login'
 import Register from './components/Registration'
 import UserSpace from './components/User-Space'
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
 import {  } from 'react-bootstrap'
 import Whoops404 from './Whoops404'
 
@@ -34,12 +34,18 @@ class App extends React.Component {
     };
   }
 
+  /**
+   * method to close newPost Modal
+   */
   modalClose = () => {
     this.setState({
       ModalShow : false, 
     })
   }
 
+  /**
+   * method to open newPost Modal
+   */
   modalOpen = () => {
     console.log(true)
     this.setState({
@@ -57,10 +63,12 @@ class App extends React.Component {
     }
     return (
       <Router>
-        <Route path="/login" component={Login}/>
-        <Route path="/register" component={Register} />
-        <Route exact path="/" component={(...props) => <UserSpace props NewPostProps={newPostProps} User={this.state.User} Posts={this.state.Posts} Contacts={this.state.Contacts}/>}/>
-        <Route component={Whoops404}/>
+        <Switch>
+          <Route path="/login" component={Login}/>
+          <Route path="/register" component={Register} />
+          <Route exact path="/" component={(...props) => <UserSpace props NewPostProps={newPostProps} User={this.state.User} Posts={this.state.Posts} Contacts={this.state.Contacts}/>}/>
+          <Route component={Whoops404}/>
+        </Switch>
       </Router>
     );
   }

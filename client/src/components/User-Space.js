@@ -4,6 +4,9 @@ import Posts from "./Post"
 import NewPostModal from "./New-Post"
 import {Container, Row, Col, Card, Badge, Button} from "react-bootstrap"
 
+/**
+ * Userspace component to view User space as per the state data
+ */
 class UserSpace extends React.Component {
 
     render() {

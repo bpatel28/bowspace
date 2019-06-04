@@ -9,6 +9,9 @@ const ContactToolTip = (props, contact) => (
 
 class Contacts extends React.Component {
 
+    /**
+     * method to get full name from firstname and last name
+     */
     getFullName = (firstName, lastName) => {
         return firstName + " " + lastName;
     }
