@@ -30,6 +30,11 @@ class App extends React.Component {
       ViewingSpaceId : "1000",
       Posts : [],
       ModalShow : false,
+      ContactLoad : false,
+      PostsLoad : false,
+      NewMessageSent : false,
+      loginLoad : false,
+      signUpLoad : false,
     };
   }
 
@@ -70,14 +75,14 @@ class App extends React.Component {
     const newPostProps = {
        ModalShow : this.state.ModalShow,
        User : this.state.User,
-       Wait : false,
+       Wait : this.state.NewMessageSent,
        modalOpen : this.modalOpen,
        modalClose : this.modalClose,
     };
     const contactProps = {
       Contacts : this.state.Contacts,
       User : this.state.User,
-      Wait: false,
+      Wait: this.state.ContactLoad,
       showSpace : this.showSpace,
     }
     const postsProps = {
@@ -85,13 +90,13 @@ class App extends React.Component {
       Posts : this.state.Posts,
       User : this.state.User,
       ViewingSpaceId : this.state.ViewingSpaceId,
-      Wait : false,
+      Wait : this.state.PostsLoad,
     }
     return (
       <Router>
         <Switch>
-          <Route path="/login" component={Login}/>
-          <Route path="/register" component={Register} />
+          <Route path="/login" component={(...props) => <Login props Wait={this.state.loginLoad}/>}/>
+          <Route path="/register" component={(...props) => <Register props Wait={this.state.signUpLoad}/>} />
           <Route exact path="/" component={(...props) => <UserSpace props NewPostProps={newPostProps} ContactProps={contactProps} PostsProps={postsProps}/>}/>
           <Route component={Whoops404}/>
         </Switch>

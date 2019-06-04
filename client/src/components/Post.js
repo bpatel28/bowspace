@@ -1,5 +1,6 @@
 import React from "react"
 import {Card} from "react-bootstrap"
+import Loader from "react-loader-spinner"
 
 /**
  * filter contact from contact list
@@ -52,6 +53,9 @@ const Posts = (props) => {
     return (
         <div className="p-3" style={{height : "75%", overflow : "auto", margin: "0 auto"}}>
             {
+                props.Wait ? 
+                    <div className="d-flex justify-content-center mt-3"><Loader type="Oval" color="#3575dd" height="100" width="100"/></div> 
+                :
                 posts.map((post, index) => <Post key={index} msg={post} contacts={contacts}/>)
             }
         </div>

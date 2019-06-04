@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom"
 import {Container, Row, Col, Form, Button, Card} from "react-bootstrap"
+import Loader from "react-loader-spinner"
 
 const Login = props => {
     return (
@@ -31,12 +32,18 @@ const Login = props => {
                                             Don't have an account. <Link to='/register'> Register Now. </Link>
                                         </Form.Label>
                                     </Form.Group>
-                            
-                                    <Form.Group className="text-center">
-                                            <Button style={{backgroundColor : '#3575dd'}} className="text-center" type="submit">
-                                                <i className="fas fa-sign-in-alt"></i> Login
-                                            </Button>
-                                    </Form.Group>
+
+                                    {
+                                        props.Wait ?
+                                            <div className="d-flex justify-content-center mt-3"><Loader type="Oval" color="#3575dd" height="50" width="50"/></div>
+                                        :
+                                            <Form.Group className="text-center">
+                                                <Button style={{backgroundColor : '#3575dd'}} className="text-center" type="submit">
+                                                    <i className="fas fa-sign-in-alt"></i> Login
+                                                </Button>
+                                            </Form.Group> 
+                                    }
+                    
                                 </Form>
                             </Card.Body>
                         </Card>
