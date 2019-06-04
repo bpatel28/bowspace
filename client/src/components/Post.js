@@ -12,6 +12,17 @@ const getContact = (contacts, userId) => {
 };
 
 /**
+ * Convert mssql datetime to Javascript timestamp
+ * @param {*} sqlDate 
+ */
+const mssqlDateToJsTimeStamp = (sqlDate) => {
+    var dateAndTime = sqlDate.split(" ");
+    var date = dateAndTime[0].split("-");
+    var time = dateAndTime[1].split(":");
+    return new Date(date[0], (date[1] - 1), date[2], time[0], time[1], time[2]);
+}
+
+/**
  * stateless component post to display single post
  * @param {*} props 
  */
@@ -25,7 +36,7 @@ const Post = props => {
                 <Card.Text>
                     {msg.PostHtml}
                 </Card.Text>
-                <Card.Text className="d-flex justify-content-end text-muted" >- {contact.FirstName + " " + contact.LastName} ({contact.UserName}) {(msg.TimeStamp).toUTCString()}</Card.Text>
+                <Card.Text className="d-flex justify-content-end text-muted" >- {contact.FirstName + " " + contact.LastName} ({contact.UserName}) {(mssqlDateToJsTimeStamp(msg.TimeStamp)).toUTCString()}</Card.Text>
             </Card.Body>
         </Card>
     );

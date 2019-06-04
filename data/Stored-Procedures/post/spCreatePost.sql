@@ -23,7 +23,7 @@ AS
 		INSERT INTO TPosts
 			(PostId, SenderId, ReceiverId, PostHtml, TimeStamp)
 			VALUES
-			(@PostId, @SenderId, @ReceiverId, @PostHtml, GETUTCDATE())
+			(@PostId, @SenderId, @ReceiverId, @PostHtml, CURRENT_TIMESTAMP)
 	END TRY
 	BEGIN CATCH
 		PRINT 'Error!';
@@ -33,5 +33,5 @@ AS
 GO
 
 -- test
-EXEC spCreatePost '1001', '1002', 'Hii'
+EXEC spCreatePost '1001', '1002', 'New Post'
 GO
