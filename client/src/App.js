@@ -21,14 +21,14 @@ class App extends React.Component {
       }, 
       Contacts : [
         {
-          Token: '',
           FirstName: 'Brijesh',
           LastName: 'Patel',
           Email: 'b.patel405@mybvc.ca',
           UserId: '1000',
           UserName: 'b.patel405'
-        },
+        }
       ],
+      ViewingSpaceId : "1000",
       Posts : [],
       ModalShow : false,
     };
@@ -66,7 +66,7 @@ class App extends React.Component {
         <Switch>
           <Route path="/login" component={Login}/>
           <Route path="/register" component={Register} />
-          <Route exact path="/" component={(...props) => <UserSpace props NewPostProps={newPostProps} User={this.state.User} Posts={this.state.Posts} Contacts={this.state.Contacts}/>}/>
+          <Route exact path="/" component={(...props) => <UserSpace props NewPostProps={newPostProps} User={this.state.User} Posts={this.state.Posts} Contacts={this.state.Contacts} ViewingSpaceId={this.state.ViewingSpaceId}/>}/>
           <Route component={Whoops404}/>
         </Switch>
       </Router>
