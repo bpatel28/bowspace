@@ -45,7 +45,7 @@ class Contacts extends React.Component {
                                 contacts.map((contact, index) => (
                                     <ListGroup.Item className = "bg-dark border-0" key={index}>
                                         <OverlayTrigger placement="right-start" overlay={(props) => ContactToolTip(props, contact)}>
-                                            <Button variant="outline-light">
+                                            <Button variant="outline-light" onClick={() => this.props.showSpace(contact)}>
                                                 {this.getFullName(contact.FirstName, contact.LastName)}
                                             </Button>
                                         </OverlayTrigger>

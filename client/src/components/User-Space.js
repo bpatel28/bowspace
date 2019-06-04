@@ -17,20 +17,22 @@ class UserSpace extends React.Component {
         return filteredContacts[0];
     }
 
+    /**
+     * get initial from firstname and lastname
+     */
     getIntitials = (firstName, lastName) => {
         return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
     }
 
     render() {
-        const user = this.props.User;
-        const contacts = this.props.Contacts;
-        const viewingSpaceId = this.props.ViewingSpaceId;
+        const contacts = this.props.PostsProps.Contacts;
+        const viewingSpaceId = this.props.PostsProps.ViewingSpaceId;
         const viewingUser = this.getContactFromList(contacts, viewingSpaceId);
         return(
             <Container fluid='true'>
                 <Row>
                     <Col md='3' style={{height : '100vh', padding : '0'}} className='bg-dark'>
-                        <Contacts Contacts={contacts} User={this.props.User}/>
+                        <Contacts Contacts={this.props.ContactProps.Contacts} User={this.props.ContactProps.User} showSpace={this.props.ContactProps.showSpace}/>
                     </Col>
                     <Col md='9' style={{height : '100vh', padding : '0'}} className='bg-dark'>
                         <Container style={{height : "100%"}}>
@@ -52,7 +54,7 @@ class UserSpace extends React.Component {
                                 </Card>
                             </div>
                             <div className="p-3" style={{height : "75%", overflow : "auto", margin: "0 auto"}}>
-                                <Posts Contacts={contacts} Posts={this.props.Posts}/>
+                                <Posts Contacts={this.props.PostsProps.Contacts} Posts={this.props.PostsProps.Posts}/>
                             </div>
                         </Container>
                     </Col>
