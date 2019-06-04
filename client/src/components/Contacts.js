@@ -14,16 +14,12 @@ class Contacts extends React.Component {
     }
 
     render () {
-        const contacts = [{
-            FirstName: "Brijesh",
-            UserName : "b.patel405",
-            Email : "b.patel405@mybvc.ca",
-            LastName: "Patel"
-        }];
-        const firstName = "Brijesh";
-        const lastName = "Patel";
+        const contacts = this.props.Contacts;
+        const user = this.props.User;
+        const firstName = user.FirstName;
+        const lastName = user.LastName;
         const name = this.getFullName(firstName, lastName);
-        const username = "b.patel405"
+        const username = user.UserName;
         const initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
         return (
             <Container fluid='true' className="text-white text-center" style={{height : '100%', padding : '0'}}>

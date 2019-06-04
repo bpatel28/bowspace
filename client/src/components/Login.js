@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom"
-import {Container, Row, Col, Form, Button, Card} from "react-bootstrap";
+import {Container, Row, Col, Form, Button, Card} from "react-bootstrap"
 
 const Login = props => {
     return (
