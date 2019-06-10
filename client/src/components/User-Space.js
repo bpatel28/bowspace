@@ -9,7 +9,7 @@ import { GetUserList, GetPosts } from "../api/api"
 /**
  * Userspace component to view User space as per the state data
  */
-class UserSpace extends React.Component {
+class UserSpace extends React.PureComponent {
 
     /**
      * filter contact from list with userid
@@ -27,8 +27,9 @@ class UserSpace extends React.Component {
     }
 
     componentDidMount = () => {
-        this.userTimerId = window.setTimeout(() => this.fetchUserList(), 100);
-        this.postTimerId = window.setTimeout(() => this.fetchUserPost(), 200);
+        console.log("---------[CDM]---------")
+        this.userTimerId = window.setTimeout(() => this.fetchUserList(), 1000);
+        this.postTimerId = window.setTimeout(() => this.fetchUserPost(), 2000);
     }
 
     componentWillUnmount = () => {
@@ -37,28 +38,36 @@ class UserSpace extends React.Component {
     }
 
     fetchUserPost = () => {
-        GetPosts(this.props.ContactProps.User.Token, this.props.PostsProps.ViewingSpaceId)
+        let viewerId = this.props.PostsProps.ViewingSpaceId;
+        if (viewerId === '') {
+            viewerId = this.props.ContactProps.User.UserId;
+        }
+        GetPosts(this.props.ContactProps.User.Token, viewerId)
             .then(result => {
-                if (result.Status === "Success") {
+                if (result.Status === "Success" && JSON.stringify(this.props.PostsProps.Posts) !== JSON.stringify(result.Posts)) {
                     this.props.PostsProps.updatePostList(result.Posts);
                 } else {
                     throw new Error(result.Guidance);
                 }
             })
-            .catch(console.log)
+            .catch((err) => {
+                console.log("No Update");
+            })
             .then(this.postTimerId = window.setTimeout(this.fetchUserPost, 2000))
     }
 
     fetchUserList = () => {
          GetUserList(this.props.ContactProps.User.Token)
             .then(result => {
-                if (result.Status === "Success") {
+                if (result.Status === "Success" && JSON.stringify(this.props.ContactProps.Contacts) !== JSON.stringify(result.Users)) {
                     this.props.ContactProps.updateUserList(result.Users);
                 } else {
                     throw new Error(result.Guidance);
                 }
             })
-            .catch(console.log)
+            .catch((err) => {
+                console.log("No Update");
+            })
             .then(this.userTimerId = window.setTimeout(this.fetchUserList, 2000))
     }
 

@@ -47,7 +47,6 @@ const GetPosts = (token, ReceiverId) => {
         credentials: 'omit',
         headers: headers
     };
-    console.log(ReceiverId);
     const params = `ReceiverId=${ReceiverId}`;
     return (Promise.resolve()).then(() => fetch(Url + params, RequestOptions)).then(response => response.json());
 }

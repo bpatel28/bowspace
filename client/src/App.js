@@ -8,27 +8,29 @@ import Whoops404 from './Whoops404'
 
 class App extends React.Component {
 
+  INITIAL_STATE = {
+    User: {
+        Token: '',
+        FirstName: '',
+        LastName: '',
+        Email: '',
+        UserId: '',
+        UserName: ''
+      },
+      Contacts: '',
+      ViewingSpaceId: '',
+      Posts: '',
+      ModalShow: false,
+      ContactLoad: true,
+      PostsLoad: true,
+      NewMessageSent: false,
+      LoginLoad: false,
+      SignUpLoad: false,
+  }
+
   constructor(props) {
     super(props);
-    this.state = {
-      User : {
-        Token : '',
-        FirstName : '',
-        LastName : '',
-        Email : '',
-        UserId : '',
-        UserName : ''
-      }, 
-      Contacts : [],
-      ViewingSpaceId : 0,
-      Posts : [],
-      ModalShow : false,
-      ContactLoad : false,
-      PostsLoad : false,
-      NewMessageSent : false,
-      LoginLoad : false,
-      SignUpLoad : false,
-    };
+    this.state = this.INITIAL_STATE;
   }
 
   /**
@@ -52,10 +54,12 @@ class App extends React.Component {
   /**
    * method to change viewing sapce id
    */
-  showSpace = (user) => {
+  showSpace = user => {
     if (user.UserId !== this.state.ViewingSpaceId) {
       this.setState({
         ViewingSpaceId: user.UserId,
+        PostsLoad: true,
+        Posts : '',
       });
       //fetch posts here
     }
@@ -64,7 +68,7 @@ class App extends React.Component {
   /**
    * change state for Users login data
    */
-  OnSuccessLogin = (data) => {
+  OnSuccessLogin = data => {
     this.setState({ User : data.Login, LoginLoad : false, ViewingSpaceId : data.Login.UserId, Contacts : [data.Login] });
   }
 
@@ -88,21 +92,17 @@ class App extends React.Component {
    * update user list
    */
   updateUserList = (userList) => {
-    this.setState(prevState => {
-      if (JSON.stringify(prevState.Contacts) !== JSON.stringify(userList)) {
-        return { Contacts : userList }
-      }
+    this.setState({
+      Contacts : userList, ContactLoad : false 
     });
   }
 
   /**
    * update user post
    */
-  updatePostList = posts => {
-    this.setState(prevState => {
-      if (JSON.stringify(prevState.Posts) !== JSON.stringify(posts)) {
-        return { Posts : posts }
-      }
+  updatePostList = (posts) => {
+    this.setState({ 
+      Posts : posts, PostsLoad : false  
     });
   }
   
@@ -130,6 +130,7 @@ class App extends React.Component {
       ViewingSpaceId : this.state.ViewingSpaceId,
       Wait : this.state.PostsLoad,
       updatePostList: this.updatePostList,
+      onProcessPost : this.onProcessPost,
     }
     return (
       <Router>
