@@ -105,6 +105,13 @@ class App extends React.Component {
       Posts : posts, PostsLoad : false  
     });
   }
+
+  /**
+   * 
+   */
+  logoutUser = () => {
+    this.setState({User : this.INITIAL_STATE.User});
+  }
   
   //render app
   render() {
@@ -122,6 +129,7 @@ class App extends React.Component {
       Wait: this.state.ContactLoad,
       showSpace : this.showSpace,
       updateUserList : this.updateUserList,
+      logoutUser: this.logoutUser,
     }
     const postsProps = {
       Contacts : this.state.Contacts,

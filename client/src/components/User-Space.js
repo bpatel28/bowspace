@@ -27,7 +27,6 @@ class UserSpace extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        console.log("---------[CDM]---------")
         this.userTimerId = window.setTimeout(() => this.fetchUserList(), 1000);
         this.postTimerId = window.setTimeout(() => this.fetchUserPost(), 2000);
     }
@@ -79,7 +78,7 @@ class UserSpace extends React.PureComponent {
             <Container fluid='true'>
                 <Row>
                     <Col md='3' style={{height : '100vh', padding : '0'}} className='bg-dark'>
-                        <Contacts Contacts={this.props.ContactProps.Contacts} Wait={this.props.ContactProps.Wait} User={this.props.ContactProps.User} showSpace={this.props.ContactProps.showSpace}/>
+                        <Contacts Contacts={this.props.ContactProps.Contacts} Wait={this.props.ContactProps.Wait} User={this.props.ContactProps.User} showSpace={this.props.ContactProps.showSpace} logoutUser={this.props.ContactProps.logoutUser}/>
                     </Col>
                     <Col md='9' style={{height : '100vh', padding : '0'}} className='bg-dark'>
                         <Container style={{height : "100%"}}>

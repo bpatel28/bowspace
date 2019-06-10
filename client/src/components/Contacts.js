@@ -35,7 +35,7 @@ class Contacts extends React.Component {
                         <Card.Title as="h1"><Badge variant="light" pill="true">{initials}</Badge></Card.Title>
                         <Card.Title>{name}</Card.Title>
                         <Card.Text>{username}</Card.Text>
-                        <Button variant="danger"><i className="fas fa-sign-out-alt"></i> Logout</Button>
+                        <Button variant="danger" onClick={this.props.logoutUser}><i className="fas fa-sign-out-alt"></i> Logout</Button>
                     </Card.Body>
                 </Card >
                 <Card bg='dark' style={{height : '60%'}}>
