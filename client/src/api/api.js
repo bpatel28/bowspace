@@ -6,13 +6,32 @@ const GetUserAuth = (Email, Username, Password) => {
     const Data = {
         Email, Username, Password,
     };
-    return (Promise.resolve())
-                .then(() => {
-                    const RequestOptions = {
-                        method: "Post", headers: headers, cache: 'no-cache', mode: 'cors', credentials: 'omit', redirect: 'error', body: JSON.stringify(Data)
-                    }
-                    return fetch(Url, RequestOptions);
-                }).then(response => response.json());
+    const RequestOptions = {
+        method: "Post",
+        headers: headers,
+        cache: 'no-cache',
+        mode: 'cors',
+        credentials: 'omit',
+        redirect: 'error',
+        body: JSON.stringify(Data)
+    }
+    return (Promise.resolve()).then(() => fetch(Url, RequestOptions)).then(response => response.json());
 }
 
-module.exports = { GetUserAuth }
+const GetUserList = (token) => {
+    const Url = "http://localhost:5000/rest/user"
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+        'x-access-token' : token
+    });
+    const RequestOptions = {
+        method: 'GET',
+        mode: 'cors',
+        cache: "no-cache",
+        credentials: 'omit',
+        headers: headers
+    };
+    return (Promise.resolve()).then(() => fetch(Url, RequestOptions)).then(response => response.json());
+}
+
+module.exports = { GetUserAuth, GetUserList }

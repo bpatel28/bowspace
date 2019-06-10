@@ -24,11 +24,11 @@ class App extends React.Component {
           FirstName: 'Brijesh',
           LastName: 'Patel',
           Email: 'b.patel405@mybvc.ca',
-          UserId: '1000',
+          UserId: 1000,
           UserName: 'b.patel405'
         }
       ],
-      ViewingSpaceId : "1000",
+      ViewingSpaceId : 1000,
       Posts : [],
       ModalShow : false,
       ContactLoad : false,
@@ -66,22 +66,41 @@ class App extends React.Component {
         ViewingSpaceId: user.UserId,
       });
       //fetch posts here
-
     }
   }
 
+  /**
+   * change state for Users login data
+   */
   OnSuccessLogin = (data) => {
     this.setState({User : data.Login, LoginLoad : false});
   }
 
+  /**
+   * change state to show loader
+   */
   OnProcessLogin = () => {
     this.setState({
       LoginLoad : true
     });
   }
 
-  OnFailedLogin = (data) => {
+  /**
+   * change state to finish loader
+   */
+  OnFailedLogin = () => {
     this.setState({LoginLoad : false});
+  }
+
+  /**
+   * update user list
+   */
+  updateUserList = (userList) => {
+    this.setState(prevState => {
+      if (JSON.stringify(prevState.Contacts) !== JSON.stringify(userList)) {
+        return { Contacts : userList }
+      }
+    });
   }
   
   //render app
@@ -99,6 +118,7 @@ class App extends React.Component {
       User : this.state.User,
       Wait: this.state.ContactLoad,
       showSpace : this.showSpace,
+      updateUserList : this.updateUserList,
     }
     const postsProps = {
       Contacts : this.state.Contacts,
