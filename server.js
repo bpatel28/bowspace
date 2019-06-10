@@ -1,4 +1,5 @@
 const Express = require('express'); //express
+const cors = require('cors') //cors
 const auth = require('./routes/auth'); //auth route
 const user = require('./routes/user'); //user route
 const post = require('./routes/post'); // post route
@@ -9,6 +10,7 @@ App.use(bodyParser.json()); // support json encoded bodies
 App.use(bodyParser.urlencoded({
     extended: true
 })); // support encoded bodies
+App.use(cors()); //cors
 
 //start server
 const WebServer = App.listen(5000, function () {
