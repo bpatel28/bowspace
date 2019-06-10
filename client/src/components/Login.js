@@ -13,6 +13,7 @@ class Login extends React.Component {
             Email : this.refs.email.value,
             Password : this.refs.password.value
         };
+        this.props.OnProcessLogin();
         GetUserAuth(data.Email, data.Username, data.Password)
             .then((result) => {
                 if (result.Status === "Success") {
@@ -21,7 +22,7 @@ class Login extends React.Component {
                     throw new Error(result.Guidance);
                 }
             }).catch((err) => {
-                console.log(err);
+                alert(err);
                 this.props.OnFailedLogin();
             })
     }

@@ -34,8 +34,8 @@ class App extends React.Component {
       ContactLoad : false,
       PostsLoad : false,
       NewMessageSent : false,
-      loginLoad : false,
-      signUpLoad : false,
+      LoginLoad : false,
+      SignUpLoad : false,
     };
   }
 
@@ -71,11 +71,17 @@ class App extends React.Component {
   }
 
   OnSuccessLogin = (data) => {
-    this.setState({User : data.Login});
+    this.setState({User : data.Login, LoginLoad : false});
+  }
+
+  OnProcessLogin = () => {
+    this.setState({
+      LoginLoad : true
+    });
   }
 
   OnFailedLogin = (data) => {
-    console.log(data);
+    this.setState({LoginLoad : false});
   }
   
   //render app
@@ -106,11 +112,11 @@ class App extends React.Component {
         <Switch>
           <Route path="/login" component={(...props) => ( 
                 loggedIn === false ? 
-                  ( <Login props Wait={this.state.loginLoad} OnSuccessLogin={this.OnSuccessLogin} OnFailedLogin={this.OnFailedLogin}/>) 
+                  ( <Login props Wait={this.state.LoginLoad} OnSuccessLogin={this.OnSuccessLogin} OnProcessLogin={this.OnProcessLogin} OnFailedLogin={this.OnFailedLogin}/>) 
                 : (<Redirect to="/"/>)) }/>
           <Route path="/register" component={(...props) => (
                  loggedIn === false ? 
-                  (<Register props Wait={this.state.signUpLoad}/>) 
+                  (<Register props Wait={this.state.SignUpLoad}/>) 
                 : (<Redirect to="/"/>)) } />
           <Route exact path="/" component={(...props) => ( 
                 loggedIn === true ? 
