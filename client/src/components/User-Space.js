@@ -4,7 +4,7 @@ import Posts from "./Post"
 import NewPostModal from "./New-Post"
 import {Container, Row, Col, Card, Badge, Button} from "react-bootstrap"
 import Loader from "react-loader-spinner"
-import { GetUserList } from "../api/api"
+import { GetUserList, GetPosts } from "../api/api"
 
 /**
  * Userspace component to view User space as per the state data
@@ -27,23 +27,39 @@ class UserSpace extends React.Component {
     }
 
     componentDidMount = () => {
-        this.userTimerId = window.setTimeout(() => this.fetchUserList(), 1000);
+        this.userTimerId = window.setTimeout(() => this.fetchUserList(), 100);
+        this.postTimerId = window.setTimeout(() => this.fetchUserPost(), 200);
     }
 
     componentWillUnmount = () => {
         clearTimeout(this.userTimerId);
+        clearTimeout(this.postTimerId);
+    }
+
+    fetchUserPost = () => {
+        GetPosts(this.props.ContactProps.User.Token, this.props.PostsProps.ViewingSpaceId)
+            .then(result => {
+                if (result.Status === "Success") {
+                    this.props.PostsProps.updatePostList(result.Posts);
+                } else {
+                    throw new Error(result.Guidance);
+                }
+            })
+            .catch(console.log)
+            .then(this.postTimerId = window.setTimeout(this.fetchUserPost, 2000))
     }
 
     fetchUserList = () => {
          GetUserList(this.props.ContactProps.User.Token)
-            .then((result) => {
+            .then(result => {
                 if (result.Status === "Success") {
                     this.props.ContactProps.updateUserList(result.Users);
                 } else {
                     throw new Error(result.Guidance);
                 }
             })
-            .then(this.userTimerId = window.setTimeout(() => this.fetchUserList(), 2000))
+            .catch(console.log)
+            .then(this.userTimerId = window.setTimeout(this.fetchUserList, 2000))
     }
 
     render() {

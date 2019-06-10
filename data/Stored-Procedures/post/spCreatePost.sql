@@ -23,7 +23,7 @@ AS
 		INSERT INTO TPosts
 			(PostId, SenderId, ReceiverId, PostHtml, TimeStamp)
 			VALUES
-			(@PostId, @SenderId, @ReceiverId, @PostHtml, CURRENT_TIMESTAMP)
+			(@PostId, @SenderId, @ReceiverId, @PostHtml, GETUTCDATE())
 	END TRY
 	BEGIN CATCH
 		PRINT 'Error!';

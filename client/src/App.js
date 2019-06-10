@@ -19,16 +19,8 @@ class App extends React.Component {
         UserId : '',
         UserName : ''
       }, 
-      Contacts : [
-        {
-          FirstName: 'Brijesh',
-          LastName: 'Patel',
-          Email: 'b.patel405@mybvc.ca',
-          UserId: 1000,
-          UserName: 'b.patel405'
-        }
-      ],
-      ViewingSpaceId : 1000,
+      Contacts : [],
+      ViewingSpaceId : 0,
       Posts : [],
       ModalShow : false,
       ContactLoad : false,
@@ -73,7 +65,7 @@ class App extends React.Component {
    * change state for Users login data
    */
   OnSuccessLogin = (data) => {
-    this.setState({User : data.Login, LoginLoad : false});
+    this.setState({ User : data.Login, LoginLoad : false, ViewingSpaceId : data.Login.UserId, Contacts : [data.Login] });
   }
 
   /**
@@ -102,6 +94,17 @@ class App extends React.Component {
       }
     });
   }
+
+  /**
+   * update user post
+   */
+  updatePostList = posts => {
+    this.setState(prevState => {
+      if (JSON.stringify(prevState.Posts) !== JSON.stringify(posts)) {
+        return { Posts : posts }
+      }
+    });
+  }
   
   //render app
   render() {
@@ -126,6 +129,7 @@ class App extends React.Component {
       User : this.state.User,
       ViewingSpaceId : this.state.ViewingSpaceId,
       Wait : this.state.PostsLoad,
+      updatePostList: this.updatePostList,
     }
     return (
       <Router>
