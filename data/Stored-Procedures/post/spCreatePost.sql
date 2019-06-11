@@ -24,8 +24,10 @@ AS
 			(PostId, SenderId, ReceiverId, PostHtml, TimeStamp)
 			VALUES
 			(@PostId, @SenderId, @ReceiverId, @PostHtml, GETUTCDATE())
+		SELECT @PostId AS PostId, 'Success' AS Status;
 	END TRY
 	BEGIN CATCH
+		SELECT 'Error' AS Success;
 		PRINT 'Error!';
 		PRINT 'Error Number: ' + CONVERT(VARCHAR, ERROR_NUMBER());
 		PRINT 'Error Message: ' + CONVERT(VARCHAR, ERROR_MESSAGE());

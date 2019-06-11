@@ -23,7 +23,7 @@ class App extends React.Component {
       ModalShow: false,
       ContactLoad: true,
       PostsLoad: true,
-      NewMessageSent: false,
+      NewMessageSent: true,
       LoginLoad: false,
       SignUpLoad: false,
   }
@@ -39,7 +39,7 @@ class App extends React.Component {
   modalClose = () => {
     this.setState({
       ModalShow : false, 
-    })
+    });
   }
 
   /**
@@ -61,7 +61,6 @@ class App extends React.Component {
         PostsLoad: true,
         Posts : '',
       });
-      //fetch posts here
     }
   }
 
@@ -107,10 +106,27 @@ class App extends React.Component {
   }
 
   /**
-   * 
+   * logout user and reinitialize page
    */
   logoutUser = () => {
     this.setState({User : this.INITIAL_STATE.User});
+  }
+
+  /**
+   * on sending start loader
+   */
+  onSendingMessage = () => {
+    this.setState({ NewMessageSent : false });
+  }
+
+  /**
+   * send new message
+   */
+  sendMessage = () => {
+    this.setState({
+      ModalShow: false,
+      NewMessageSent : true,
+    })
   }
   
   //render app
@@ -122,6 +138,8 @@ class App extends React.Component {
        Wait : this.state.NewMessageSent,
        modalOpen : this.modalOpen,
        modalClose : this.modalClose,
+       onSend : this.sendMessage,
+       onSendingMessage : this.onSendingMessage,
     };
     const contactProps = {
       Contacts : this.state.Contacts,

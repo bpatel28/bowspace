@@ -7,7 +7,7 @@ const GetUserAuth = (Email, Username, Password) => {
         Email, Username, Password,
     };
     const RequestOptions = {
-        method: "Post",
+        method: "POST",
         headers: headers,
         cache: 'no-cache',
         mode: 'cors',
@@ -51,4 +51,27 @@ const GetPosts = (token, ReceiverId) => {
     return (Promise.resolve()).then(() => fetch(Url + params, RequestOptions)).then(response => response.json());
 }
 
-module.exports = { GetUserAuth, GetUserList, GetPosts }
+const SendPost = (token, SenderId, ReceiverId, PostHtml) => {
+    const Url = "http://localhost:5000/rest/post";
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+        'x-access-token': token
+    });
+    const Data = {
+        SenderId,
+        ReceiverId,
+        PostHtml
+    }
+    const RequestOptions = {
+        method: "PUT",
+        headers: headers,
+        cache: 'no-cache',
+        mode: 'cors',
+        credentials: 'omit',
+        redirect: 'error',
+        body: JSON.stringify(Data)
+    }
+    return (Promise.resolve()).then(() => fetch(Url, RequestOptions)).then(response => response.json());
+}
+
+module.exports = { GetUserAuth, GetUserList, GetPosts, SendPost }

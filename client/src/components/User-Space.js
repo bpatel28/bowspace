@@ -43,6 +43,7 @@ class UserSpace extends React.PureComponent {
         }
         GetPosts(this.props.ContactProps.User.Token, viewerId)
             .then(result => {
+                result.Posts = result.Posts.sort((aPost, bPost) => (new Date(bPost.TimeStamp) - new Date(aPost.TimeStamp)));
                 if (result.Status === "Success" && JSON.stringify(this.props.PostsProps.Posts) !== JSON.stringify(result.Posts)) {
                     this.props.PostsProps.updatePostList(result.Posts);
                 } else {
@@ -98,13 +99,13 @@ class UserSpace extends React.PureComponent {
                                                     </div>
                                                 </div>
                                                 <Button style={{borderRadius: "35px", fontSize : "24px", width : "60px", height : "60px"}} variant="light" onClick={this.props.NewPostProps.modalOpen}><i className="fas fa-pen"></i></Button>
-                                                <NewPostModal Wait={this.props.NewPostProps.Wait} Receiver={viewingUser} show={this.props.NewPostProps.ModalShow} onHide={this.props.NewPostProps.modalClose}/>
+                                                <NewPostModal Wait={this.props.NewPostProps.Wait} onSend={this.props.NewPostProps.onSend} Receiver={viewingUser} Sender={this.props.NewPostProps.User} show={this.props.NewPostProps.ModalShow} onHide={this.props.NewPostProps.modalClose} onSendingMessage={this.props.NewPostProps.onSendingMessage}/>
                                             </div>
                                         </Card.Body>
                                 }
                             </Card>
                             </div>
-                            <div className="p-3" style={{height : "75%", overflow : "auto", margin: "0 auto"}}>
+                            <div className="p-3" style={{height : "90%", overflow : "auto", margin: "0 auto"}}>
                                 <Posts Wait={this.props.PostsProps.Wait} Contacts={this.props.PostsProps.Contacts} Posts={this.props.PostsProps.Posts}/>
                             </div>
                         </Container>

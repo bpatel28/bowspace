@@ -64,11 +64,14 @@ const createPost = (req, res) => {
         }).then(result => {
             //set response
             let row = result.recordset[0];
-            res.status(200).json({
-                PostId : row.PostId,
-                Status : 'Success'
-            });
+            console.log(row);
+            if (row.Status === "Success") {
+                res.status(200).json(row);
+            } else {
+                throw new Error("Error status.");
+            }
         }).catch(err => {
+            console.log(err);
             //set error response
             res.status(500).json({
                 Guidance: "Invalid Request.",
