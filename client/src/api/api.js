@@ -1,10 +1,10 @@
-const GetUserAuth = (Email, Username, Password) => {
+const GetUserAuth = (Email, UserName, Password) => {
     const Url = "http://localhost:5000/rest/auth";
     const headers = new Headers({
         'Content-Type': 'application/json',
     });
     const Data = {
-        Email, Username, Password,
+        Email, UserName, Password,
     };
     const RequestOptions = {
         method: "POST",

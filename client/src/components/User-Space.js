@@ -26,16 +26,25 @@ class UserSpace extends React.PureComponent {
         return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
     }
 
+    /**
+     * Set timer to fetch post and user list from api with CDM
+     */
     componentDidMount = () => {
         this.userTimerId = window.setTimeout(() => this.fetchUserList(), 1000);
         this.postTimerId = window.setTimeout(() => this.fetchUserPost(), 2000);
     }
 
+    /**
+     * unset timers
+     */
     componentWillUnmount = () => {
         clearTimeout(this.userTimerId);
         clearTimeout(this.postTimerId);
     }
 
+    /**
+     * call api function and update dom
+     */
     fetchUserPost = () => {
         let viewerId = this.props.PostsProps.ViewingSpaceId;
         if (viewerId === '') {
@@ -56,6 +65,9 @@ class UserSpace extends React.PureComponent {
             .then(this.postTimerId = window.setTimeout(this.fetchUserPost, 2000))
     }
 
+    /**
+     * Call api function and update dom
+     */
     fetchUserList = () => {
          GetUserList(this.props.ContactProps.User.Token)
             .then(result => {
@@ -84,28 +96,28 @@ class UserSpace extends React.PureComponent {
                     <Col md='9' style={{height : '100vh', padding : '0'}} className='bg-dark'>
                         <Container style={{height : "100%"}}>
                             <div className="py-2" style={{height : "20%"}}>
-                            <Card className="text-white py-2" style={{backgroundColor : "#3575dd"}}>
-                                {
-                                    this.props.PostsProps.Wait ? 
-                                        <div className="d-flex justify-content-center mt-3"><Loader type="Oval" color="white" height="50" width="50"/></div> 
-                                    :
-                                        <Card.Body>
-                                            <div className="d-flex justify-content-between">
-                                                <div className="d-flex flex-row">
-                                                    <Card.Title as="h1"><Badge variant="light" pill="true">{this.getIntitials(viewingUser.FirstName, viewingUser.LastName)}</Badge></Card.Title>
-                                                    <div className="ml-3">
-                                                        <Card.Title>{viewingUser.FirstName + " " + viewingUser.LastName}</Card.Title>
-                                                        <Card.Subtitle className="">{viewingUser.UserName}</Card.Subtitle>
+                                <Card className="text-white py-2" style={{backgroundColor : "#3575dd"}}>
+                                    {
+                                        this.props.PostsProps.Wait ? 
+                                            <div className="d-flex justify-content-center mt-3"><Loader type="Oval" color="white" height="50" width="50"/></div> 
+                                        :
+                                            <Card.Body>
+                                                <div className="d-flex justify-content-between">
+                                                    <div className="d-flex flex-row">
+                                                        <Card.Title as="h1"><Badge variant="light" pill="true">{this.getIntitials(viewingUser.FirstName, viewingUser.LastName)}</Badge></Card.Title>
+                                                        <div className="ml-3">
+                                                            <Card.Title>{viewingUser.FirstName + " " + viewingUser.LastName}</Card.Title>
+                                                            <Card.Subtitle className="">{viewingUser.UserName}</Card.Subtitle>
+                                                        </div>
                                                     </div>
+                                                    <Button style={{borderRadius: "35px", fontSize : "24px", width : "60px", height : "60px"}} variant="light" onClick={this.props.NewPostProps.modalOpen}><i className="fas fa-pen"></i></Button>
+                                                    <NewPostModal Wait={this.props.NewPostProps.Wait} onSend={this.props.NewPostProps.onSend} Receiver={viewingUser} Sender={this.props.NewPostProps.User} show={this.props.NewPostProps.ModalShow} onHide={this.props.NewPostProps.modalClose} onSendingMessage={this.props.NewPostProps.onSendingMessage}/>
                                                 </div>
-                                                <Button style={{borderRadius: "35px", fontSize : "24px", width : "60px", height : "60px"}} variant="light" onClick={this.props.NewPostProps.modalOpen}><i className="fas fa-pen"></i></Button>
-                                                <NewPostModal Wait={this.props.NewPostProps.Wait} onSend={this.props.NewPostProps.onSend} Receiver={viewingUser} Sender={this.props.NewPostProps.User} show={this.props.NewPostProps.ModalShow} onHide={this.props.NewPostProps.modalClose} onSendingMessage={this.props.NewPostProps.onSendingMessage}/>
-                                            </div>
-                                        </Card.Body>
-                                }
-                            </Card>
+                                            </Card.Body>
+                                    }
+                                </Card>
                             </div>
-                            <div className="p-3" style={{height : "90%", overflow : "auto", margin: "0 auto"}}>
+                            <div className="p-3" style={{height : "78%", overflow : "auto", margin: "0 auto"}}>
                                 <Posts Wait={this.props.PostsProps.Wait} Contacts={this.props.PostsProps.Contacts} Posts={this.props.PostsProps.Posts}/>
                             </div>
                         </Container>

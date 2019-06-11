@@ -17,10 +17,6 @@ const getContact = (contacts, userId) => {
  * @param {*} sqlDate 
  */
 const mssqlDateToJsTimeStamp = (sqlDate) => {
-    // var dateAndTime = sqlDate.split(" ");
-    // var date = dateAndTime[0].split("-");
-    // var time = dateAndTime[1].split(":");
-    // return new Date(date[0], (date[1] - 1), date[2], time[0], time[1], time[2]);
     return new Date(sqlDate);
 }
 
@@ -52,7 +48,7 @@ const Posts = (props) => {
     const posts = props.Posts;
     const contacts = props.Contacts;
     return (
-        <div className="p-3" style={{height : "75%", overflow : "auto", margin: "0 auto"}}>
+        <div className="p-3" style={{height : "100%", overflow : "auto", margin: "0 auto"}}>
             {
                 props.Wait ? 
                     <div className="d-flex justify-content-center mt-3"><Loader type="Oval" color="#3575dd" height="100" width="100"/></div> 

@@ -36,7 +36,7 @@ AS
 GO
 
 --test 
-EXEC spAuthenticateUser 'b.patel405', '', '1234';
+EXEC spAuthenticateUser 'b.patel405', 'b.patel405', '1234';
 
 select * from TUsers
 

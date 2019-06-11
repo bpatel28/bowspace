@@ -6,15 +6,18 @@ import { GetUserAuth } from "../api/api"
 
 class Login extends React.Component {
 
+    /**
+     * on submit login call api and redirect to home page onsucess.
+     */
     OnSubmitLogin = (e) => {
         e.preventDefault();
         let data = {
-            Username : this.refs.email.value,
+            UserName : this.refs.email.value,
             Email : this.refs.email.value,
             Password : this.refs.password.value
         };
         this.props.OnProcessLogin();
-        GetUserAuth(data.Email, data.Username, data.Password)
+        GetUserAuth(data.Email, data.UserName, data.Password)
             .then((result) => {
                 if (result.Status === "Success") {
                     this.props.OnSuccessLogin(result);
