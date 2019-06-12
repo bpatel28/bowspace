@@ -14,6 +14,12 @@ CREATE PROC spRegisterUser
 AS 
 	BEGIN TRY
 
+		-- check for empty inputs
+		IF @FirstName IS NULL OR @FirstName = ''OR @LastName IS NULL OR @LastName = ''
+			OR @Email IS NULL OR @Email = '' OR @UserName IS NULL OR @UserName = '' OR
+			@Password IS NULL OR @Password = ''
+			THROW 50001, 'Empty Input not allowed', 1;
+
 		-- Check if email and username already registered
 		IF @Email IN (SELECT Email FROM TUsers WHERE Email = @Email)
 			THROW 50001, 'An account with this email is already registered', 1;

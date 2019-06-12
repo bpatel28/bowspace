@@ -74,4 +74,21 @@ const SendPost = (token, SenderId, ReceiverId, PostHtml) => {
     return (Promise.resolve()).then(() => fetch(Url, RequestOptions)).then(response => response.json());
 }
 
-module.exports = { GetUserAuth, GetUserList, GetPosts, SendPost }
+const RegisterUser = (data) => {
+    const Url = "http://localhost:5000/rest/register-user";
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+    });
+    const RequestOptions = {
+        method: "PUT",
+        headers: headers,
+        cache: 'no-cache',
+        mode: 'cors',
+        credentials: 'omit',
+        redirect: 'error',
+        body: JSON.stringify(data)
+    }
+    return (Promise.resolve()).then(() => fetch(Url, RequestOptions)).then(response => response.json());
+}
+
+module.exports = { GetUserAuth, GetUserList, GetPosts, SendPost, RegisterUser }

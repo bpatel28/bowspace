@@ -2,9 +2,8 @@ import React from 'react';
 import Login from './components/Login'
 import Register from './components/Registration'
 import UserSpace from './components/User-Space'
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
-
 import Whoops404 from './Whoops404'
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
 
 class App extends React.Component {
 
@@ -87,6 +86,14 @@ class App extends React.Component {
     this.setState({LoginLoad : false});
   }
 
+
+  /**
+   * 
+   */
+  OnSuccessRegister = data => {
+    this.setState({ SignUpLoad : false})
+  }
+
   /**
    * update user list
    */
@@ -128,6 +135,24 @@ class App extends React.Component {
       NewMessageSent : true,
     })
   }
+
+  /**
+   * complete loader
+   */
+  onSuccessRegister = () => {
+    this.setState({
+      SignUpLoad : false,
+    });
+  }
+
+  /**
+   * start loader on signup
+   */
+  onProcessRegister = () => {
+    this.setState({
+      SignUpLoad : true,
+    });
+  }
   
   //render app
   render() {
@@ -161,17 +186,14 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Route path="/login" component={(...props) => ( 
+          <Route path="/login" component={(props) => ( 
                 loggedIn === false ? 
-                  ( <Login props Wait={this.state.LoginLoad} OnSuccessLogin={this.OnSuccessLogin} OnProcessLogin={this.OnProcessLogin} OnFailedLogin={this.OnFailedLogin}/>) 
+                  ( <Login props={props} Wait={this.state.LoginLoad} OnSuccessLogin={this.OnSuccessLogin} OnProcessLogin={this.OnProcessLogin} OnFailedLogin={this.OnFailedLogin}/>) 
                 : (<Redirect to="/"/>)) }/>
-          <Route path="/register" component={(...props) => (
-                 loggedIn === false ? 
-                  (<Register props Wait={this.state.SignUpLoad}/>) 
-                : (<Redirect to="/"/>)) } />
-          <Route exact path="/" component={(...props) => ( 
+          <Route path="/register" component={(props) =>  <Register props={props} Wait={this.state.SignUpLoad} onProcessRegister={this.onProcessRegister} onSuccessRegister={this.onSuccessRegister}/>} />
+          <Route exact path="/" component={(props) => ( 
                 loggedIn === true ? 
-                  ( <UserSpace props NewPostProps={newPostProps} ContactProps={contactProps} PostsProps={postsProps}/>) 
+                  ( <UserSpace props={props} NewPostProps={newPostProps} ContactProps={contactProps} PostsProps={postsProps}/>) 
                 : ((<Redirect to="/login"/>)))}/>
           <Route component={Whoops404}/>
         </Switch>

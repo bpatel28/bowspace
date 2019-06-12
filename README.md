@@ -74,7 +74,7 @@ This API will help user to register new account. API will return UserId with mes
 
 - **[API END POINT](routes/user.js)** - http://localhost:5000/rest/register-user
 
-- **Request Method** - POST
+- **Request Method** - PUT
 
 - **JSON BODY** - { "FirstName" : "fname", "LastName" : "lname", "UserName" : "user123", "Email" : "email@xyz.com", "Password" : "afso*ik3wemf$"  }
 
