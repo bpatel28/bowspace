@@ -2,7 +2,7 @@ import React from 'react';
 import Login from './components/Login'
 import Register from './components/Registration'
 import UserSpace from './components/User-Space'
-import Whoops404 from './Whoops404'
+import Whoops404 from './components/Whoops404'
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
 
 class App extends React.Component {
