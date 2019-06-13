@@ -34,6 +34,10 @@ Chat Application to post messages on different users wall.
 3. Start API Server - `npm start`
 4. Start Client App - `cd client` & `npm start`
 
+## Unit Test API Service
+
+- `npm test` - test cmd
+
 ## API Specification
 
 ### Summary
