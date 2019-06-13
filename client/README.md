@@ -2,7 +2,7 @@
 
 ## Run Application
 
-1. `npm start` - start client application
+- `npm start` - start client application
 
 ## Login Route
 
