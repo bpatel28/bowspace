@@ -1,5 +1,5 @@
 const GetUserAuth = (Email, UserName, Password) => {
-    const Url = "http://localhost:5000/rest/auth";
+    const Url = "http://localhost:8888/rest/auth";
     const headers = new Headers({
         'Content-Type': 'application/json',
     });
@@ -19,7 +19,7 @@ const GetUserAuth = (Email, UserName, Password) => {
 }
 
 const GetUserList = (token) => {
-    const Url = "http://localhost:5000/rest/user";
+    const Url = "http://localhost:8888/rest/user";
     const headers = new Headers({
         'Content-Type': 'application/json',
         'x-access-token' : token
@@ -35,7 +35,7 @@ const GetUserList = (token) => {
 }
 
 const GetPosts = (token, ReceiverId) => {
-    const Url = "http://localhost:5000/rest/post?";
+    const Url = "http://localhost:8888/rest/post?";
     const headers = new Headers({
         'Content-Type': 'application/json',
         'x-access-token': token
@@ -52,7 +52,7 @@ const GetPosts = (token, ReceiverId) => {
 }
 
 const SendPost = (token, SenderId, ReceiverId, PostHtml) => {
-    const Url = "http://localhost:5000/rest/post";
+    const Url = "http://localhost:8888/rest/post";
     const headers = new Headers({
         'Content-Type': 'application/json',
         'x-access-token': token
@@ -75,7 +75,7 @@ const SendPost = (token, SenderId, ReceiverId, PostHtml) => {
 }
 
 const RegisterUser = (data) => {
-    const Url = "http://localhost:5000/rest/register-user";
+    const Url = "http://localhost:8888/rest/register-user";
     const headers = new Headers({
         'Content-Type': 'application/json',
     });
