@@ -60,7 +60,7 @@ Chat Application to post messages on different users wall.
 
 This API will return Web token which will be used in subsequent requests to access service. If credentials are incorrect it will return access-denied and error message.
 
-- **[API END POINT](routes/auth.js)** - http://localhost:5000/rest/auth
+- **[API END POINT](routes/auth.js)** - http://localhost:8888/rest/auth
 
 - **Request Method** - POST
 
@@ -76,7 +76,7 @@ This API will return Web token which will be used in subsequent requests to acce
 
 This API will help user to register new account. API will return UserId with message and status if the information are valid otherwise it will return error with status.
 
-- **[API END POINT](routes/user.js)** - http://localhost:5000/rest/register-user
+- **[API END POINT](routes/user.js)** - http://localhost:8888/rest/register-user
 
 - **Request Method** - PUT
 
@@ -92,7 +92,7 @@ This API will help user to register new account. API will return UserId with mes
 
 This API will return list of users with their information like firstname, lastname, email and username. List can be filtered with keywords, username or userId. If params are wrong it will return error with guidance.
 
-- **[API END POINT](routes/user.js)** - http://localhost:5000/rest/user
+- **[API END POINT](routes/user.js)** - http://localhost:8888/rest/user
 
 - **Request Method** - GET
 
@@ -110,7 +110,7 @@ This API will return list of users with their information like firstname, lastna
 
 This API will return list of messages posted on wall. List could be filtered with SenderId, ReceiverId, TimeStamp, Keywords, PostId or Combination of those. If PostId provided no other params are required.
 
-- **[API END POINT](routes/post.js)** - http://localhost:5000/rest/post
+- **[API END POINT](routes/post.js)** - http://localhost:8888/rest/post
 
 - **Request Method** - GET
 
@@ -128,7 +128,7 @@ This API will return list of messages posted on wall. List could be filtered wit
 
 This API will accept new post for user. It will return PostId with success message or error with guidance.
 
-- **[API END POINT](routes/post.js)** - http://localhost:5000/rest/post
+- **[API END POINT](routes/post.js)** - http://localhost:8888/rest/post
 
 - **Request Method** - PUT
 
@@ -146,7 +146,7 @@ This API will accept new post for user. It will return PostId with success messa
 
 This API will help to delete post from database. It will return deletedPostId and success message or error with guidance.
 
-- **[API END POINT](routes/post.js)** - http://localhost:5000/rest/post
+- **[API END POINT](routes/post.js)** - http://localhost:8888/rest/post
 
 - **Request Method** - DELETE
 
@@ -164,7 +164,7 @@ This API will help to delete post from database. It will return deletedPostId an
 
 This API will update user information like their Email, Password, FirstName, LastName, UserName. It will return update information with success message on successful update or error with guidance.
 
-- **[API END POINT](routes/user.js)** - http://localhost:5000/rest/User
+- **[API END POINT](routes/user.js)** - http://localhost:8888/rest/User
 
 - **Request Method** - POST
 
