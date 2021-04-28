@@ -1,166 +1,201 @@
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../server');
+let chai = require("chai");
+let chaiHttp = require("chai-http");
+const { expect } = require("chai");
 
-let should = chai.should();
+const server = require("../server");
+const config = require("../lib/config/config"); // get our config
+const User = require("../lib/model/User");
+const { getPosts, addPost } = require("../lib/utils/post-utils");
+const { createPost } = require("../lib/routes/post");
+
+chai.should();
 chai.use(chaiHttp);
 
-/**
- * Test get post
- */
-describe('GET /rest/post', () => {
+// test login info for user.
+const testData = {
+  FirstName: "test name5",
+  MiddleName: "test",
+  LastName: "test",
+  Email: "test56@test.com",
+  UserName: "test145",
+  Password: "testPassword@123",
+};
 
-    let token = '';
-    //get token first from auth route
-    beforeEach((done) => {
-        let data = {
-            UserName: "b.patel405",
-            Password: "1234",
-        };
-        chai.request(server)
-            .post('/rest/auth')
-            .send(data)
-            .end((err, res) => {
-                token = res.body.Login.Token;
-                done();
+// Test for create post route
+describe("PUT /rest/post", () => {
+  let user = null;
+
+  // get token before test to pass middleware
+  beforeEach((done) => {
+    chai
+      .request(server)
+      .post("/rest/auth")
+      .send({ Email: testData.Email, Password: testData.Password })
+      .end((err, loginRes) => {
+        if (!err && loginRes.body.Status === "Success") {
+          user = new User(loginRes.body);
+          done();
+        } else {
+          // if user not registered then register.
+          chai
+            .request(server)
+            .put("/rest/user")
+            .send(testData)
+            .end((err, registerRes) => {
+              if (!err && registerRes.body.Status === "Success") {
+                user = new User(registerRes.body);
+              }
+              done();
             });
-    });
-
-    // all the post
-    it('it should get all the post from database', done => {
-        chai.request(server)
-            .get('/rest/post')
-            .set('x-access-token', token)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.have.be.a('object');
-                res.body.should.have.property('Posts');
-                res.body.Posts.should.be.a('array');
-                res.body.should.have.property('Status').eql('Success');
-                done();
-            });
-    });
-
-    //post for receiverId 1000
-    it('it should get all the post for User 1000 from database', done => {
-        let data = {
-            ReceiverId : 1000,
         }
-        chai.request(server)
-            .get('/rest/post')
-            .set('x-access-token', token)
-            .query(data)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.have.be.a('object');
-                res.body.should.have.property('Posts');
-                res.body.Posts.should.be.a('array');
-                let sameuser = false;
-                res.body.Posts.forEach(post => {
-                    sameuser = (post.ReceiverId === data.ReceiverId);
-                    if (sameuser === false) {
-                        return;
-                    }
-                });
-                sameuser.should.equal(true);
-                res.body.should.have.property('Status').eql('Success');
-                done();
-            });
-    });
+      });
+  });
+
+  it("it should create new post.", (done) => {
+    let data = {
+      SenderId: user.UserId,
+      ReceiverId: user.UserId,
+      PostHtml: "TEST MESSAGE",
+    };
+    chai
+      .request(server)
+      .put("/rest/post")
+      .set("x-access-token", user.Token)
+      .send(data)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.be.a("object");
+        res.body.should.have.property("PostId");
+        res.body.should.have.property("Sender");
+        res.body.Sender.should.have.property("UserId").eql(data.SenderId);
+        res.body.should.have.property("Receiver");
+        res.body.Receiver.should.have.property("UserId").eql(data.ReceiverId);
+        res.body.should.have.property("PostHtml");
+        res.body.should.have.property("PostHtml").eql(data.PostHtml);
+        res.body.should.have.property("Status").eql("Success");
+        done();
+      });
+  });
 });
 
-/**
- * Test create post
- */
-describe('PUT /rest/post', () => {
+//  test to filter and collect post
+describe("GET /rest/post", () => {
+  let user = null;
+  let expectedPosts = [];
+  let keywords = "Hello";
 
-    let token = '';
-    //get token first from auth route
-    beforeEach((done) => {
-        let data = {
-            UserName: "b.patel405",
-            Password: "1234",
-        };
-        chai.request(server)
-            .post('/rest/auth')
-            .send(data)
-            .end((err, res) => {
-                token = res.body.Login.Token;
-                done();
+  // get token before test to pass middleware
+  beforeEach((done) => {
+    chai
+      .request(server)
+      .post("/rest/auth")
+      .send({ Email: testData.Email, Password: testData.Password })
+      .end((err, loginRes) => {
+        if (!err && loginRes.body.Status === "Success") {
+          user = new User(loginRes.body);
+        } else {
+          // if user not registered then register.
+          chai
+            .request(server)
+            .put("/rest/user")
+            .send(testData)
+            .end((err, registerRes) => {
+              if (!err && registerRes.body.Status === "Success") {
+                user = new User(registerRes.body);
+              }
             });
-    });
+        }
+      });
+    done();
+  });
 
-    // create new post
-    it('it should create new post and get back postid', done => {
-        let data = {
-            SenderId : 1000,
-            ReceiverId : 1002,
-        };
-        chai.request(server)
-            .put('/rest/post')
-            .set('x-access-token', token)
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.have.be.a('object');
-                res.body.should.have.property('PostId');
-                res.body.should.have.property('Status').eql('Success');
-                done();
-            });
-    });
+  // get token before test to pass middleware
+  beforeEach((done) => {
+    getPosts({ Keywords: keywords })
+      .then((result) => {
+        expectedPosts = result;
+      })
+      .catch()
+      .finally(() => done());
+  });
+
+  it("it should get all post with given keywords.", (done) => {
+    chai
+      .request(server)
+      .get("/rest/post")
+      .set("x-access-token", user.Token)
+      .query({ Keywords: keywords })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.be.a("object");
+        res.body.should.have.property("Posts");
+        res.body.should.have.property("Status").eql("Success");
+        res.body.Posts.should.be.a("array");
+        expect(res.body.Posts).to.have.length(expectedPosts.length);
+        done();
+      });
+  });
 });
 
-/**
- * Delete Post Test
- */
-describe('DELETE /rest/post', () => {
+// test for deleting post.
+describe("DELETE /rest/post", () => {
+  let user = null;
+  let postId = -1;
 
-    let token = '';
-    //get token first from auth route
-    beforeEach((done) => {
-        let data = {
-            UserName: "b.patel405",
-            Password: "1234",
-        };
-        chai.request(server)
-            .post('/rest/auth')
-            .send(data)
-            .end((err, res) => {
-                token = res.body.Login.Token;
-                done();
+  // get token before test to pass middleware
+  beforeEach((done) => {
+    chai
+      .request(server)
+      .post("/rest/auth")
+      .send({ Email: testData.Email, Password: testData.Password })
+      .end((err, loginRes) => {
+        if (!err && loginRes.body.Status === "Success") {
+          user = new User(loginRes.body);
+          done();
+        } else {
+          // if user not registered then register.
+          chai
+            .request(server)
+            .put("/rest/user")
+            .send(testData)
+            .end((err, registerRes) => {
+              if (!err && registerRes.body.Status === "Success") {
+                user = new User(registerRes.body);
+              }
+              done();
             });
-    });
+        }
+      });
+  });
 
-    //create new post and set postID
-    let PostId = '';
-    beforeEach(done => {
-        let data = {
-            SenderId: 1000,
-            ReceiverId: 1002,
-        };
-        chai.request(server)
-            .put('/rest/post')
-            .set('x-access-token', token)
-            .send(data)
-            .end((err, res) => {
-                PostId = res.body.PostId;
-                done();
-            });
-    });
+  // get token before test to pass middleware
+  beforeEach((done) => {
+    let data = {
+      SenderId: user.UserId,
+      ReceiverId: user.UserId,
+      PostHtml: "TEST MESSAGE",
+    };
+    addPost(data)
+      .then((result) => {
+        postId = result.PostId;
+      })
+      .catch()
+      .finally(() => done());
+  });
 
-    // delete newly created post
-    it('it should delete post and get back deleted postId', done => {
-
-        chai.request(server)
-            .delete('/rest/post')
-            .set('x-access-token', token)
-            .send({PostId})
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.have.be.a('object');
-                res.body.should.have.property('DeletedPostId').eql(PostId);
-                res.body.should.have.property('Status').eql('Success');
-                done();
-            });
-    });
+  it("it should delete given PostId.", (done) => {
+    chai
+      .request(server)
+      .delete("/rest/post")
+      .set("x-access-token", user.Token)
+      .send({ PostId: postId })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.be.a("object");
+        res.body.should.have.property("PostId");
+        res.body.should.have.property("PostId").eql(postId);
+        res.body.should.have.property("Status").eql("Success");
+        done();
+      });
+  });
 });

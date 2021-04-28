@@ -1,93 +1,71 @@
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../server');
+let chai = require("chai");
+let chaiHttp = require("chai-http");
 
-let should = chai.should();
+const server = require("../server");
+const config = require("../lib/config/config"); // get our config file
+const { validateUser } = require("../lib/utils/user-utils");
+
+chai.should();
 chai.use(chaiHttp);
 
-/**
- * test auth route
- */
-describe('POST /rest/auth', () => {
-    //successful login
-    it('it should get jwt token with status "success"', (done) => {
-        //credentials from database defined in SP
-        let data = {
-            UserName : "b.patel405",
-            Password : "1234",
-        };
-        chai.request(server)
-            .post('/rest/auth')
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.have.be.a('object');
-                res.body.should.have.property('Login');
-                res.body.should.have.property('Status');
-                res.body.should.have.property('Status').eql('Success');
-                res.body.Login.should.have.property('Token');
-                res.body.Login.should.have.property('UserId');
-                res.body.Login.should.have.property('UserName');
-                res.body.Login.should.have.property('Email');
-                res.body.Login.should.have.property('FirstName');
-                res.body.Login.should.have.property('LastName');
-                done();
-            });
-    });
-    //access denied test
-    it('it should not get jwt token and get status "access-denied"', (done) => {
-        //wrong password
-        let login = {
-            UserName: "b.patel405",
-            Email: "b.patel405@mybvc.ca",
-            Password: "123456789",
-        };
-        chai.request(server)
-            .post('/rest/auth')
-            .send(login)
-            .end((err, res) => {
-                res.should.have.status(500);
-                res.body.should.have.be.a('object');
-                res.body.should.have.property('Status');
-                res.body.should.have.property('Status').eql('access-denied');
-                res.body.should.have.property('Guidance').eql('Access denied (A4483).');
-                done();
-            });
-    });
-});
+describe("POST /rest/auth", () => {
+  let user = null;
+  const login = {
+    Email: config.testLogin.Email,
+    UserName: config.testLogin.UserName,
+    Password: config.testLogin.Password,
+  };
 
-/**
- * Test Middlewear
- */
-describe('{middlewear}', () => {
-    let token = '';
-    //get token first from auth route
-    beforeEach((done) => {
-        let data = {
-            UserName: "b.patel405",
-            Password: "1234",
-        };
-        chai.request(server)
-            .post('/rest/auth')
-            .send(data)
-            .end((err, res) => {
-                token = res.body.Login.Token;
-                done();
-            });
-    });
+  beforeEach((done) => {
+    validateUser(login)
+      .then((result) => (user = result))
+      .catch()
+      .finally(() => done());
+  });
 
-    //request to default path
-    describe('GET /', () => {
-        it('it should get default response message', (done) => {
-            chai.request(server)
-                .get('/')
-                .set('x-access-token', token)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.have.be.a('object');
-                    res.body.should.have.property('Message').eql('Welcome to the BowSpace API');
-                    done();
-                });
+  // if have valid credential then run status 200 test else status 500 test.
+  it("Validate test user login.", (done) => {
+    if (user) {
+      chai
+        .request(server)
+        .post("/rest/auth")
+        .send(login)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.be.a("object");
+          res.body.should.have.property("Status");
+          res.body.should.have.property("Status").eql("Success");
+          res.body.should.have.property("Token");
+          res.body.should.have.property("UserId");
+          res.body.should.have.property("UserId").eql(user.UserId);
+          res.body.should.have.property("UserName");
+          res.body.should.have.property("UserName").eql(user.UserName);
+          res.body.should.have.property("Email");
+          res.body.should.have.property("Email").eql(user.Email);
+          res.body.should.have.property("FirstName");
+          res.body.should.have.property("FirstName").eql(user.FirstName);
+          res.body.should.have.property("LastName");
+          res.body.should.have.property("LastName").eql(user.LastName);
+          res.body.should.have.property("MiddleName");
+          res.body.should.have.property("MiddleName").eql(user.MiddleName);
+          res.body.should.have.property("ValidFrom");
+          done();
         });
-    });
+    } else {
+      chai
+        .request(server)
+        .post("/rest/auth")
+        .send(login)
+        .end((err, res) => {
+          res.should.have.status(500);
+          res.body.should.have.be.a("object");
+          res.body.should.have.property("Status");
+          res.body.should.have.property("Status").eql("access-denied");
+          res.body.should.have
+            .property("Guidance")
+            .eql("Access denied (A4483).");
+          done();
+        });
+    }
+  });
 });
