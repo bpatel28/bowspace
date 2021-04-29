@@ -82,5 +82,4 @@ CREATE SEQUENCE dbo.Sequence_PostId
     CYCLE;
 GO
 
-DECLARE @UserId INT;
-    SELECT @UserId = NEXT VALUE FOR dbo.Sequence_UserId;
+

@@ -3,7 +3,7 @@ let chaiHttp = require("chai-http");
 
 const server = require("../server");
 const config = require("../lib/config/config"); // get our config file
-const { validateUser } = require("../lib/utils/user-utils");
+const { dbValidateUser } = require("../lib/utils/user-utils");
 
 chai.should();
 chai.use(chaiHttp);
@@ -17,7 +17,7 @@ describe("POST /rest/auth", () => {
   };
 
   beforeEach((done) => {
-    validateUser(login)
+    dbValidateUser(login)
       .then((result) => (user = result))
       .catch()
       .finally(() => done());
@@ -60,7 +60,7 @@ describe("POST /rest/auth", () => {
           res.should.have.status(500);
           res.body.should.have.be.a("object");
           res.body.should.have.property("Status");
-          res.body.should.have.property("Status").eql("access-denied");
+          res.body.should.have.property("Status").eql("Failed");
           res.body.should.have
             .property("Guidance")
             .eql("Access denied (A4483).");

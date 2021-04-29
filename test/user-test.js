@@ -5,7 +5,7 @@ const { expect } = require("chai");
 const server = require("../server");
 const config = require("../lib/config/config"); // get our config file
 const User = require("../lib/model/User");
-const { getUsers } = require("../lib/utils/user-utils");
+const { dbGetUsers } = require("../lib/utils/user-utils");
 
 chai.should();
 chai.use(chaiHttp);
@@ -166,7 +166,7 @@ describe("GET /rest/user", () => {
   });
 
   beforeEach((done) => {
-    getUsers({ Email: testData.Email, Keywords: "patel" })
+    dbGetUsers({ Email: testData.Email, Keywords: "patel" })
       .then((result) => (expectedUers = result))
       .catch()
       .finally(() => done());

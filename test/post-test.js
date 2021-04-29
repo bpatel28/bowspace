@@ -3,10 +3,8 @@ let chaiHttp = require("chai-http");
 const { expect } = require("chai");
 
 const server = require("../server");
-const config = require("../lib/config/config"); // get our config
 const User = require("../lib/model/User");
-const { getPosts, addPost } = require("../lib/utils/post-utils");
-const { createPost } = require("../lib/routes/post");
+const { dbGetPosts, dbAddPost } = require("../lib/utils/post-utils");
 
 chai.should();
 chai.use(chaiHttp);
@@ -111,7 +109,7 @@ describe("GET /rest/post", () => {
 
   // get token before test to pass middleware
   beforeEach((done) => {
-    getPosts({ Keywords: keywords })
+    dbGetPosts({ Keywords: keywords })
       .then((result) => {
         expectedPosts = result;
       })
@@ -175,11 +173,12 @@ describe("DELETE /rest/post", () => {
       ReceiverId: user.UserId,
       PostHtml: "TEST MESSAGE",
     };
-    addPost(data)
+
+    dbAddPost(data)
       .then((result) => {
         postId = result.PostId;
       })
-      .catch()
+      .catch(console.log)
       .finally(() => done());
   });
 
