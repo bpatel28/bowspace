@@ -6,7 +6,7 @@ Chat Application to post messages on different users wall.
 
 - [Node.js](server.js) - API Server
 - [React.js](client) - Client Application
-- [MS SQL Server](data) - Database
+- [MS SQL Server](database) - Database
 - [Mocha and Chai](test) - Unit testing for server side code
 
 ## API Server Database Connection Requirement
@@ -18,13 +18,18 @@ Chat Application to post messages on different users wall.
     Please include following code in config.js
 
     `module.exports = {
-        'secret': 'bowspacecode',
-        'database': {
+        secret: 'bowspacecode',
+        database: {
             database: 'bowspace',
             server: '_ServerName_',
             user : '_UserName_',
             password : '_Password_',
-        }
+        },
+        testLogin: {
+            Email: 'test@test.com',
+            Password: 'test',
+            UserName: 'test',
+        },
     };`
 
 ## Run Application
@@ -46,7 +51,7 @@ Chat Application to post messages on different users wall.
 
 2. Register New Account - This API will help user to register new account. API will return UserId with Success message if user provided valid data otherwise it will return error with guidance.
 
-3. Get Users information - This API will return list of users with their details. Users could be filtered with different params like UserId, UserName, Keywords.
+3. Get Users information - This API will return list of users with their details. Users could be filtered with different params like UserId, UserName, Email, Keywords.
 
 4. Get Posts - This API will return list of posted messages on wall. Messages could be filtered with SenderId, ReceiverId, Keywords, TimeStamp or PostId.
 
@@ -60,39 +65,39 @@ Chat Application to post messages on different users wall.
 
 This API will return Web token which will be used in subsequent requests to access service. If credentials are incorrect it will return access-denied and error message.
 
-- **[API END POINT](routes/auth.js)** - http://localhost:8888/rest/auth
+- **[API END POINT](lib/routes/auth.js)** - http://localhost:8888/rest/user
 
 - **Request Method** - POST
 
-- **JSON BODY** - { "UserName" : "user123", "Email" : "email@xyz.com", "Password" : "afso*ik3wemf$"  }
+- **JSON BODY** - { "UserName" : "user123", "Email" : "email@xyz.com", "Password" : "afso\*ik3wemf$" }
 
 - User can provide UserName or Email, and password for login
 
-- **Response Success** - {"Login" : { "UserId" : "1u", "UserName" : "user123", "FirstName" : "firstName", "LastName" : "lname", "Email" : "email@xyz.com", "Token" : "fyg2ukehj23nqrewio23i32jkenwfio23jnf34ui843uii3uuui4" }, "Status" : "Success"}
+- **Response Success** - { "UserId" : "1u", "UserName" : "user123", "FirstName" : "firstName", "LastName" : "lname", "MiddleName" : "", "Email" : "email@xyz.com", "Token" : "fyg2ukehj23nqrewio23i32jkenwfio23jnf34ui843uii3uuui4" , "ValidFrom" : "", ""Status" : "Success"}
 
-- **Response Error** - { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
+- **Response Error** - { "Guidance" : "Access denied (A4483).", "Status" : "Error"}
 
 ### Service 2 - Register New Account
 
 This API will help user to register new account. API will return UserId with message and status if the information are valid otherwise it will return error with status.
 
-- **[API END POINT](routes/user.js)** - http://localhost:8888/rest/register-user
+- **[API END POINT](lib/routes/user.js)** - http://localhost:8888/rest/user
 
 - **Request Method** - PUT
 
-- **JSON BODY** - { "FirstName" : "fname", "LastName" : "lname", "UserName" : "user123", "Email" : "email@xyz.com", "Password" : "afso*ik3wemf$"  }
+- **JSON BODY** - { "FirstName" : "fname", "LastName" : "lname", MiddleName: "", "UserName" : "user123", "Email" : "email@xyz.com", "Password" : "afso\*ik3wemf$" }
 
 - All body inputs are mandatory
 
-- **Response Success** - {"UserId" : "u1", "Message" : "User successfully registered",  "Status" : "Success"}
+- **Response Success** - {"UserId" : "1u", "UserName" : "user123", "FirstName" : "firstName", "LastName" : "lname", "MiddleName" : "", "Email" : "email@xyz.com", "Token" : "fyg2ukehj23nqrewio23i32jkenwfio23jnf34ui843uii3uuui4" , "ValidFrom" : "", ""Status" : "Success"}
 
 - **Response Error** - { "Guidance" : "Invalid Request. Check your inputs.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
 ### Service 3 - Get User Information
 
-This API will return list of users with their information like firstname, lastname, email and username. List can be filtered with keywords, username or userId. If params are wrong it will return error with guidance.
+This API will return list of users with their information like firstname, middlename, lastname, email and username. List can be filtered with keywords, username or userId. If params are wrong it will return error with guidance.
 
-- **[API END POINT](routes/user.js)** - http://localhost:8888/rest/user
+- **[API END POINT](lib/routes/user.js)** - http://localhost:8888/rest/user
 
 - **Request Method** - GET
 
@@ -102,7 +107,7 @@ This API will return list of users with their information like firstname, lastna
 
 - all params are optional. supply empty string to avoid filter or do not provide that in input.
 
-- **Response Success** - {"Users" : [ { "UserId": "u1", "FirstName": "fname",  "LastName": "lname", "UserName": "user123", "Email": "user@xyz.ca" "ValidFrom": "2019-05-30T15:45:38.343Z" } , {...} ],  "Status" : "Success"}
+- **Response Success** - {"Users" : [ { "UserId": "u1", "FirstName": "fname", "LastName": "lname", "UserName": "user123", "MiddleName" : "mName", "Email": "user@xyz.ca" "ValidFrom": "2019-05-30T15:45:38.343Z" } , {...} ], "Status" : "Success"}
 
 - **Response Error** - { "Guidance" : "Invalid Request. Check your inputs.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
@@ -110,7 +115,7 @@ This API will return list of users with their information like firstname, lastna
 
 This API will return list of messages posted on wall. List could be filtered with SenderId, ReceiverId, TimeStamp, Keywords, PostId or Combination of those. If PostId provided no other params are required.
 
-- **[API END POINT](routes/post.js)** - http://localhost:8888/rest/post
+- **[API END POINT](lib/routes/post.js)** - http://localhost:8888/rest/post
 
 - **Request Method** - GET
 
@@ -120,7 +125,7 @@ This API will return list of messages posted on wall. List could be filtered wit
 
 - all params are optional. supply empty string to avoid filter or do not provide that in input.
 
-- **Response Success** - {"Posts" : [ { "PostId": p1, "SenderId": u1, "ReceiverId": "u2", "PostHtml": "Hii", "TimeStamp": "2019-05-29T20:56:07.166Z" }, {...} ],  "Status" : "Success"}
+- **Response Success** - {"Posts" : [ { "PostId": p1, "Sender": {}, "Receiver": {}, "PostHtml": "Hii", "TimeStamp": "2019-05-29T20:56:07.166Z" }, {...} ], "Status" : "Success"}
 
 - **Response Error** - { "Guidance" : "Invalid Request. Check your inputs.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
@@ -128,7 +133,7 @@ This API will return list of messages posted on wall. List could be filtered wit
 
 This API will accept new post for user. It will return PostId with success message or error with guidance.
 
-- **[API END POINT](routes/post.js)** - http://localhost:8888/rest/post
+- **[API END POINT](lib/routes/post.js)** - http://localhost:8888/rest/post
 
 - **Request Method** - PUT
 
@@ -138,7 +143,7 @@ This API will accept new post for user. It will return PostId with success messa
 
 - all inputs in body are Mandatory.
 
-- **Response Success** - {"PostId" : "p1",  "Status" : "Success"}
+- **Response Success** - {"PostId" : "p1", "Status" : "Success", "Sender": {}, "Receiver": {}, "PostHtml": "Hii", "TimeStamp": "2019-05-29T20:56:07.166Z" }
 
 - **Response Error** - { "Guidance" : "Invalid Request.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
@@ -146,7 +151,7 @@ This API will accept new post for user. It will return PostId with success messa
 
 This API will help to delete post from database. It will return deletedPostId and success message or error with guidance.
 
-- **[API END POINT](routes/post.js)** - http://localhost:8888/rest/post
+- **[API END POINT](lib/routes/post.js)** - http://localhost:8888/rest/post
 
 - **Request Method** - DELETE
 
@@ -156,7 +161,7 @@ This API will help to delete post from database. It will return deletedPostId an
 
 - all inputs in body are Mandatory.
 
-- **Response Success** - {"DeletedPostId" : "p1",  "Status" : "Success"}
+- **Response Success** - {"PostId" : "p1", "Status" : "Success"}
 
 - **Response Error** - { "Guidance" : "Invalid Request.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
 
@@ -164,16 +169,16 @@ This API will help to delete post from database. It will return deletedPostId an
 
 This API will update user information like their Email, Password, FirstName, LastName, UserName. It will return update information with success message on successful update or error with guidance.
 
-- **[API END POINT](routes/user.js)** - http://localhost:8888/rest/User
+- **[API END POINT](lib/routes/user.js)** - http://localhost:8888/rest/User
 
 - **Request Method** - POST
 
 - **Headers** - { "Content-Type" : "application/json", "x-access-token" : "newjfi34uiewdj3i2e9in320ioewn2oasdfasdffadsfqafweefwa" }
 
-- **JSON BODY** - { "UserId": "u1", "FirstName": "fname",  "LastName": "lname", "UserName": "user123", "Email": "user@xyz.ca" "Password": "asfioewhf823we" }
+- **JSON BODY** - { "UserId": "u1", "FirstName": "fname", "LastName": "lname", "UserName": "user123", "Email": "user@xyz.ca" "Password": "asfioewhf823we" }
 
 - Minimum one input is required along with UserId to update.
 
-- **Response Success** - { "UserId": "u1", "FirstName": "fname",  "LastName": "lname", "UserName": "user123", "Email": "user@xyz.ca" "ValidFrom": "2019-05-30T15:45:38.343Z",  "Status" : "Success"}
+- **Response Success** - { "UserId": "u1", "FirstName": "fname", "LastName": "lname","MiddleName" : "mName", "UserName": "user123", "Email": "user@xyz.ca" "ValidFrom": "2019-05-30T15:45:38.343Z", "Status" : "Success"}
 
 - **Response Error** - { "Guidance" : "Invalid Request.", "Status" : "Error"} OR { "Guidance" : "Access denied (A4483).", "Status" : "access-denied"}
